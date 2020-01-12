@@ -11,17 +11,29 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 //import java.net.Socket;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import frc.robot.Constants;
-//import frc.robot.Constants.*;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import frc.robot.Robot;
 
 public class DriveTrain extends Subsystem {
-  TalonSRX rightFront;
+  /*TalonSRX rightFront; //2019 DriveTrain
   TalonSRX rightFollower;
   TalonSRX leftFront;
-  TalonSRX leftFollower;
+  TalonSRX leftFollower;*/
+  CANSparkMax rightFront;
+  CANSparkMax rightFollower;
+  CANSparkMax leftFront;
+  CANSparkMax leftFollower;
+  CANEncoder rightEncoder;
+  CANEncoder leftEncoder;
+  CANPIDController rightPidController;
+  CANPIDController leftPidController;
   Ultrasonic ultrasonicSensor;
   private double leftCurrentPercentJoystick = 0.0;
   private double rightCurrentPercentJoystick = 0.0;
@@ -38,68 +50,89 @@ public class DriveTrain extends Subsystem {
   private boolean autoFlag = false;
 
   private void driveTrainInit(){
-    rightFront    = new TalonSRX(Constants.CANRightFrontMasterController);
-    rightFollower = new TalonSRX(Constants.CANRightFrontFollowerController);
-    leftFront     = new TalonSRX(Constants.CANLeftFrontMasterController);
-    leftFollower  = new TalonSRX(Constants.CANLeftFrontFollowerController);
+    rightFront    = new CANSparkMax(Constants.CANRightFrontMasterController, MotorType.kBrushless);
+    rightFollower = new CANSparkMax(Constants.CANRightFrontFollowerController, MotorType.kBrushless);
+    leftFront     = new CANSparkMax(Constants.CANLeftFrontMasterController, MotorType.kBrushless);
+    leftFollower  = new CANSparkMax(Constants.CANLeftFrontFollowerController, MotorType.kBrushless);
+    rightEncoder = new CANEncoder(rightFront);
+    leftEncoder = new CANEncoder(leftFront);
+    rightPidController= new CANPIDController(rightFront);
+    leftPidController = new CANPIDController(leftFront);
 
     //Reset all factory defaults
-    rightFront.configFactoryDefault();
+    /*rightFront.configFactoryDefault(); //2019 Factory Default
     rightFollower.configFactoryDefault();
     leftFront.configFactoryDefault();
-    leftFollower.configFactoryDefault();
-
+    leftFollower.configFactoryDefault();*/
      //Configure drive train
     //Make constants different to those used for the lift
-    rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
-    rightFront.setSensorPhase(Constants.DrivekSensorPhase);
+    //rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
+    rightPidController.setFeedbackDevice(rightEncoder);
+    //rightFront.setSensorPhase(Constants.DrivekSensorPhase);
     rightFront.setInverted(Constants.DrivekMotorInvert);
-    rightFront.configNominalOutputForward(0, Constants.DrivekTimeoutMs);
-    rightFront.configNominalOutputReverse(0, Constants.DrivekTimeoutMs);
-    rightFront.configPeakOutputForward(Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
-    rightFront.configPeakOutputReverse(-Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
-    rightFront.configAllowableClosedloopError(Constants.DrivePIDmaxerror, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
-    rightFront.config_kF(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkF, Constants.DrivekTimeoutMs);
-		rightFront.config_kP(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkP, Constants.DrivekTimeoutMs);
-		rightFront.config_kI(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkI, Constants.DrivekTimeoutMs);
-    rightFront.config_kD(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkD, Constants.DrivekTimeoutMs);
-		/* Set the quadrature (relative) sensor to match absolute */
-    rightFront.setSelectedSensorPosition(0, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
+    //rightFront.configNominalOutputForward(0, Constants.DrivekTimeoutMs);
+    //rightFront.configNominalOutputReverse(0, Constants.DrivekTimeoutMs);
+    //rightFront.configPeakOutputForward(Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
+    //rightFront.configPeakOutputReverse(-Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
+    rightPidController.setOutputRange(-1, 1, 0);
+    //rightFront.configAllowableClosedloopError(Constants.DrivePIDmaxerror, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
+    rightPidController.setSmartMotionAllowedClosedLoopError(Constants.DrivePIDmaxerror, 0);
+    //rightFront.config_kF(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkF, Constants.DrivekTimeoutMs);
+    rightPidController.setFF(Constants.DrivePIDkF);
+    //rightFront.config_kP(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkP, Constants.DrivekTimeoutMs);
+    rightPidController.setP(Constants.DrivePIDkP);
+    //rightFront.config_kI(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkI, Constants.DrivekTimeoutMs);
+    rightPidController.setI(Constants.DrivePIDkI);
+    //rightFront.config_kD(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkD, Constants.DrivekTimeoutMs);
+    rightPidController.setD(Constants.DrivePIDkD);
+    /* Set the quadrature (relative) sensor to match absolute */
+    //rightFront.setSelectedSensorPosition(0, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
 
-    leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
-    leftFront.setSensorPhase(Constants.DrivekSensorPhase);
+    //leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
+    leftPidController.setFeedbackDevice(rightEncoder);
+    //leftFront.setSensorPhase(Constants.DrivekSensorPhase);
     leftFront.setInverted(!Constants.DrivekMotorInvert);
-    leftFront.configNominalOutputForward(0, Constants.DrivekTimeoutMs);
-    leftFront.configNominalOutputReverse(0, Constants.DrivekTimeoutMs);
-    leftFront.configPeakOutputForward(Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
-    leftFront.configPeakOutputReverse(-Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
-    leftFront.configAllowableClosedloopError(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDmaxerror);
-    leftFront.config_kF(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkF, Constants.DrivekTimeoutMs);
-		leftFront.config_kP(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkP, Constants.DrivekTimeoutMs);
-		leftFront.config_kI(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkI, Constants.DrivekTimeoutMs);
-    leftFront.config_kD(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkD, Constants.DrivekTimeoutMs);
- 		/* Set the quadrature (relative) sensor to match absolute */
-    leftFront.setSelectedSensorPosition(0, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
+    //leftFront.configNominalOutputForward(0, Constants.DrivekTimeoutMs);
+    //leftFront.configNominalOutputReverse(0, Constants.DrivekTimeoutMs);
+    //leftFront.configPeakOutputForward(Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
+    //leftFront.configPeakOutputReverse(-Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
+    leftPidController.setOutputRange(-1, 1, 0);
+    //leftFront.configAllowableClosedloopError(Constants.DrivePIDmaxerror, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
+    leftPidController.setSmartMotionAllowedClosedLoopError(Constants.DrivePIDmaxerror, 0);
+    //leftFront.config_kF(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkF, Constants.DrivekTimeoutMs);
+    leftPidController.setFF(Constants.DrivePIDkF);
+    //leftFront.config_kP(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkP, Constants.DrivekTimeoutMs);
+    leftPidController.setP(Constants.DrivePIDkP);
+    //leftFront.config_kI(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkI, Constants.DrivekTimeoutMs);
+    leftPidController.setI(Constants.DrivePIDkI);
+    //leftFront.config_kD(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkD, Constants.DrivekTimeoutMs);
+    leftPidController.setD(Constants.DrivePIDkD);
 
     //Set rampe rate. ToDo : Dynamically change PID in the joystick controlled code to effectively set different forward and backwards rates. Don't forget to configure for semi auto actions though !!
-    rightFront.configOpenloopRamp(.3, 1000);
-    leftFront.configOpenloopRamp(.3, 1000);
+    //rightFront.configOpenloopRamp(.3, 1000);
+    //leftFront.configOpenloopRamp(.3, 1000);
+    rightFront.setOpenLoopRampRate(.3);
+    leftFront.setOpenLoopRampRate(.3);
 
     /* set up followers */
     rightFollower.follow(rightFront);
     leftFollower.follow(leftFront);
 
-    rightFollower.setInverted(InvertType.FollowMaster);
+    /*rightFollower.setInverted(InvertType.FollowMaster);
     leftFollower.setInverted(InvertType.FollowMaster);
     rightFront.setSensorPhase(true);
-    leftFront.setSensorPhase(true);
+    leftFront.setSensorPhase(true);*/    
 
     //leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 6,  Constants.DrivekTimeoutMs);
     //rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 7 ,  Constants.DrivekTimeoutMs);
-    leftFront.setNeutralMode(NeutralMode.Brake);
-    rightFront.setNeutralMode(NeutralMode.Brake);
-    leftFollower.setNeutralMode(NeutralMode.Brake);
-    rightFollower.setNeutralMode(NeutralMode.Brake);
+    //leftFront.setNeutralMode(NeutralMode.Brake);
+    //rightFront.setNeutralMode(NeutralMode.Brake);
+    //leftFollower.setNeutralMode(NeutralMode.Brake);
+    //rightFollower.setNeutralMode(NeutralMode.Brake);
+    leftFront.setIdleMode(IdleMode.kBrake);
+    rightFront.setIdleMode(IdleMode.kBrake);
+    leftFollower.setIdleMode(IdleMode.kBrake);
+    rightFollower.setIdleMode(IdleMode.kBrake);
 
     //Configure ultrasonic range finder
 //    ultrasonicSensor = new Ultrasonic(Constants.DigUltrasonicPingChannel, Constants.DigUltrasonicEchoChannel, Unit.kMillimeters);
@@ -122,8 +155,10 @@ public class DriveTrain extends Subsystem {
 //    _leftFront.setSelectedSensorPosition(6,1,1);
 //    _rightFront.setSelectedSensorPosition(8,1,1);
     if (Robot.isReal() && Robot.useHardware()){
-      leftFront.setSelectedSensorPosition(0,0,Constants.DrivekTimeoutMs);
-      rightFront.setSelectedSensorPosition(0,0,Constants.DrivekTimeoutMs);
+      //leftFront.setSelectedSensorPosition(0,0,Constants.DrivekTimeoutMs);
+      //rightFront.setSelectedSensorPosition(0,0,Constants.DrivekTimeoutMs);
+      leftEncoder.setPosition(0);
+      rightEncoder.setPosition(0);
     }
     else{
       leftEncoderSimulation = 0;
@@ -133,14 +168,16 @@ public class DriveTrain extends Subsystem {
 
   private double getLeftEncoderTicks(){
     if (Robot.isReal() && Robot.useHardware())
-      return leftFront.getSelectedSensorPosition();
+      //return leftFront.getSelectedSensorPosition();
+      return leftEncoder.getPosition();
     else
       return leftEncoderSimulation;
   }
 
   private double getRightEncoderTicks(){
     if (Robot.isReal() && Robot.useHardware())
-      return rightFront.getSelectedSensorPosition();
+      //return rightFront.getSelectedSensorPosition();
+      return rightEncoder.getPosition();
     else
       return rightEncoderSimulation;
   }
@@ -210,8 +247,8 @@ public class DriveTrain extends Subsystem {
   private void setSpeedRaw(double leftSpeed, double rightSpeed){
     //Speed is ticks per 100mS ?
     if (Robot.isReal() && Robot.useHardware()){
-      leftFront.set(ControlMode.Velocity, leftSpeed);
-      rightFront.set(ControlMode.Velocity, rightSpeed);
+      leftFront.set(leftSpeed);
+      rightFront.set(rightSpeed);
     }
     else
     {
