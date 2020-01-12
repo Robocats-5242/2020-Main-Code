@@ -30,10 +30,10 @@ public class AlignWithTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Math.abs(Robot.visionSystem.getTargetError()) > Constants.MaxAllowableTargetError) {
+    /*if(Math.abs(Robot.visionSystem.getTargetError()) > Constants.MaxAllowableTargetError) { //Revisit later
       Robot.driveTrain.setAutoFlag(true);
       
-    }
+    }*/
   }
 
   // Make this return true when this Command no longer needs to run execute()

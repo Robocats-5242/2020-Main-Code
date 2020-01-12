@@ -59,7 +59,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Lift extend", pneumaticSystem.getPneumaticsState());
     SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
     SmartDashboard.putNumber("Lift error", liftSystem.getLiftPositionErrorTotal());
-    SmartDashboard.putNumber("Target error", visionSystem.getTargetError());
 
 //    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
 //    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());
