@@ -55,7 +55,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("LiftPosition", liftSystem.getLiftPositionInches());
     SmartDashboard.putNumber("Left dist.", driveTrain.getLeftEncoderInches());
     SmartDashboard.putNumber("Right dist.", driveTrain.getRightEncoderInches());
+<<<<<<< HEAD
     //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
+=======
+    SmartDashboard.putBoolean("Cargo in", intakeSystem.isBallIn());
+    SmartDashboard.putBoolean("Lift extend", pneumaticSystem.getPneumaticsState());
+    SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
+    SmartDashboard.putNumber("Lift error", liftSystem.getLiftPositionErrorTotal());
+    SmartDashboard.putNumber("Target error", visionSystem.getTargetError());
+>>>>>>> cc7779ce477f86f64bfb07ccf46967ade0c467c9
 
 //    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
 //    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());

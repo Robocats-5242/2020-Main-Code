@@ -32,6 +32,7 @@ public class AlignWithTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+<<<<<<< HEAD
     if(Robot.visionSystem.x > 1){ //1 = 1 degree margin of error
       Robot.driveTrain.setSpeedPercentAuto(0, Math.abs(Robot.visionSystem.x) / -27 * Constants.HomingModifier);
     }else if(Robot.visionSystem.x < -1){
@@ -40,6 +41,12 @@ public class AlignWithTarget extends Command {
       isDone = true;
     }
     Robot.driveTrain.updateDriveTrain();
+=======
+    if(Math.abs(Robot.visionSystem.getTargetError()) > Constants.MaxAllowableTargetError) {
+      Robot.driveTrain.setAutoFlag(true);
+      
+    }
+>>>>>>> cc7779ce477f86f64bfb07ccf46967ade0c467c9
   }
 
   // Make this return true when this Command no longer needs to run execute()
