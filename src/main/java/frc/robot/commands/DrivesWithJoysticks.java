@@ -79,35 +79,6 @@ public class DrivesWithJoysticks extends Command {
     newLeftSpeed = adjustSpeed(currentLeftSpeed, targetLeftSpeed, Constants.JoystickAccelleration, Constants.JoystickDecelleration);
     newRightSpeed = adjustSpeed(currentRightSpeed, targetRightSpeed, Constants.JoystickAccelleration, Constants.JoystickDecelleration);
     Robot.driveTrain.setSpeedPercentJoystick(newLeftSpeed, newRightSpeed);
-
-    //Check if we need to adjust the lift height for hab climb
-    if (Robot.operatorInterface.getPOV() == 0){
-      Robot.liftSystem.moveLift(Constants.LiftManualSpeed);
-    }
-    else if (Robot.operatorInterface.getPOV() == 180){
-      Robot.liftSystem.moveLift(-Constants.LiftManualSpeed);
-    }
-
-    //Check if we need to turn on the hab climb crawl motor
-    if (Robot.operatorInterface.getPOV() == 90){
-      Robot.habClimber.setCrawlerPower(Constants.HabCrawlSpeed);
-    }
-    else if (Robot.operatorInterface.getPOV() == 270){
-      Robot.habClimber.setCrawlerPower(-Constants.HabCrawlSpeed);
-    }
-    else{
-      Robot.habClimber.setCrawlerPower(0);
-    }
-
-    if (Robot.operatorInterface.getControllerButtonState(Constants.HabClimbButton) == false){
-      //Not currently climbing so check if retracting
-      //Not really the best way to do this but should work... kinda
-      //Button to retract the rear climber back up
-      if (Robot.operatorInterface.getControllerButtonState(Constants.HabRetractButton))
-        Robot.habClimber.setClimberPower(Constants.ClimberRetractSpeed);
-      else
-        Robot.habClimber.setClimberPower(0);
-    }
     
   }
   

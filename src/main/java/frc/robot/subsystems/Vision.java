@@ -38,8 +38,8 @@ public class Vision extends Subsystem {
   double tySim;
   double taSim;
 
-  double x;
-  double y;
+  public double x;
+  public double y;
   double area;
 
   public Vision(){
@@ -57,14 +57,17 @@ public class Vision extends Subsystem {
     }
 }
 
-public void updateVisionSimulation(){
+  public void updateVisionSimulation(){
   }
 
   public void updateVision(){
-      //read values periodically
-      x = tx.getDouble(0.0);
-      y = ty.getDouble(0.0);
-      area = ta.getDouble(0.0);
+    if(Robot.isReal()){//read values periodically
+    x = tx.getDouble(0.0);
+    y = ty.getDouble(0.0);
+    area = ta.getDouble(0.0);
+    }else{
+      //To Do: Develop Vision simulation
+  }
   } 
   
   public double estimateDistancePowerPort(){ //Note: CANNOT use this method for Loading Bay. The Limelight is most likely too close in height to the Loading Bay target to make this method effective.

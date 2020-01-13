@@ -55,10 +55,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("LiftPosition", liftSystem.getLiftPositionInches());
     SmartDashboard.putNumber("Left dist.", driveTrain.getLeftEncoderInches());
     SmartDashboard.putNumber("Right dist.", driveTrain.getRightEncoderInches());
-    SmartDashboard.putBoolean("Cargo in", intakeSystem.isBallIn());
-    SmartDashboard.putBoolean("Lift extend", pneumaticSystem.getPneumaticsState());
-    SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
-    SmartDashboard.putNumber("Lift error", liftSystem.getLiftPositionErrorTotal());
+    //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
 
 //    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
 //    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());
@@ -68,8 +65,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Accel-Y", imu.getAccelY());
     SmartDashboard.putNumber("Accel-Z", imu.getAccelZ());
     SmartDashboard.putNumber("Accel-Z Ave.", imu.getAccelZAverage());
-    SmartDashboard.putNumber("Climber Power", habClimber.getClimberPower());
-    SmartDashboard.putNumber("Crawler Power", habClimber.getCrawlerPower());
 
   }
 
@@ -80,14 +75,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveTrain = new DriveTrain();
-    liftSystem = new Lift();
-    pneumaticSystem = new Pneumatics();
-    intakeSystem = new Intake();
+    //liftSystem = new Lift();
+    //pneumaticSystem = new Pneumatics();
+    //intakeSystem = new Intake();
     driveWithJoystick = new DrivesWithJoysticks();
     //OI must come after subsystems since it references commands which in turn reference sub-systems
     visionSystem = new Vision();
     imu = new RobotAccelerometer();
-    habClimber = new Climber();
     operatorInterface = new OI();
 
     //Make a note of the current angle of the accelerometer
@@ -110,8 +104,7 @@ public class Robot extends TimedRobot {
   }
 
   private void updateSimulations(){
-    liftSystem.updateLiftSimulation();
-    intakeSystem.updateIntakeSimulation();
+    //intakeSystem.updateIntakeSimulation();
     driveTrain.updateDrivetrainSimulation();
   }
   
@@ -162,6 +155,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    driveTrain.setAutoFlag(true);
   }
 
   /**
@@ -169,11 +163,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-      doActivePeriodic();
-    }
+    driveTrain.setAutoFlag(true);
+  }
  
     @Override
-  public void teleopInit() {    
+  public void teleopInit() {  
+    driveTrain.setAutoFlag(false);  
   } 
 
   /**
@@ -183,6 +178,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     doActivePeriodic();
+    driveTrain.setAutoFlag(false); 
   }
 
   /**
@@ -197,7 +193,7 @@ public class Robot extends TimedRobot {
   }
 
   public static boolean useHardware(){
-      return false;
+      return true;
   }
 
   public static boolean useJoysticks(){
@@ -205,11 +201,10 @@ public class Robot extends TimedRobot {
 }
 
   private void doActivePeriodic(){
-    //Since we don't have different auto vs teleop we should run the same events in both xxxPeriodic loops
     Scheduler.getInstance().run();
     DrivesWithJoysticks.updateDriveFromJoystick();
     driveTrain.updateDriveTrain();
-    intakeSystem.updateIntake();
+    //intakeSystem.updateIntake();
   }
 
  }

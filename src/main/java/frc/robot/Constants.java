@@ -181,10 +181,11 @@ public class Constants {
 	public static final double  ClimberRetractSpeed     = 1.0;//ToDo : Check polarity
 
 	//Vision parameters
-	public static final double LimelightMountAngle = 0; //Not sure if this is in Rads or Deg. Limelight docs does not specify. Check with Steve.
+	public static final double LimelightMountAngle = 0; //Not sure if this is in Rads or Deg. Limelight docs does not specify. Check with Steve
 	public static final double LimelightMountHeight = 0;
 	public static final double PowerPortTargetHeight = 89.75; //In inches, center of target (2020: 6'9.25" from ground - bottom, 1'5" tall target)
 	public static final double LoadingBayTargetHeight = 16.5; //In inches, center of target (2020: 11" from ground - bottom, 11" tall target)
+	public static final double HomingModifier = 0.5; //For limiting the speed of homing in AlignWithTarget
 
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from
