@@ -18,22 +18,28 @@ public class AlignWithTarget extends Command {
   public AlignWithTarget() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    
+    requires(Robot.driveTrain);
+    requires(Robot.visionSystem);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     isDone = false;
+    Robot.driveTrain.setAutoFlag(true);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    /*if(Math.abs(Robot.visionSystem.getTargetError()) > Constants.MaxAllowableTargetError) { //Revisit later
-      Robot.driveTrain.setAutoFlag(true);
-      
-    }*/
+    if(Robot.visionSystem.x > 1){ //1 = 1 degree margin of error
+      Robot.driveTrain.setSpeedPercentAuto(0, Math.abs(Robot.visionSystem.x) / -27 * Constants.HomingModifier);
+    }else if(Robot.visionSystem.x < -1){
+      Robot.driveTrain.setSpeedPercentAuto(Math.abs(Robot.visionSystem.x) / -27 * Constants.HomingModifier, 0);
+    }else {
+      isDone = true;
+    }
+    Robot.driveTrain.updateDriveTrain();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -45,11 +51,18 @@ public class AlignWithTarget extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.driveTrain.setSpeedPercentAuto(0, 0);
+    Robot.driveTrain.updateDriveTrain();
+    Robot.driveTrain.setAutoFlag(false);
   }
+  
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.driveTrain.setSpeedPercentAuto(0, 0);
+    Robot.driveTrain.updateDriveTrain();
+    Robot.driveTrain.setAutoFlag(false);
   }
 }
