@@ -27,20 +27,6 @@ public class Vision extends Subsystem {
   private static boolean isBusy = false;
   private static int timeoutCounter = 0;
 
-<<<<<<< HEAD
-  NetworkTableEntry tx;
-  NetworkTableEntry ty;
-  NetworkTableEntry ta;
-  double txSim;
-  double tySim;
-  double taSim;
-
-  public double x;
-  public double y;
-  double area;
-
-=======
->>>>>>> cc7779ce477f86f64bfb07ccf46967ade0c467c9
   public Vision(){
     Robot.logMessage(CommandName, "constructor");
     if (Robot.isReal()){
@@ -63,20 +49,6 @@ public class Vision extends Subsystem {
     }
 }
 
-<<<<<<< HEAD
-  public void updateVisionSimulation(){
-  }
-
-  public void updateVision(){
-    if(Robot.isReal()){//read values periodically
-    x = tx.getDouble(0.0);
-    y = ty.getDouble(0.0);
-    area = ta.getDouble(0.0);
-    }else{
-      //To Do: Develop Vision simulation
-  }
-  } 
-=======
   public double getRetroTargetError(){
       //This function returns an error factor to be used to point in the direction of the retro-flective targets
       return xPosition;
@@ -107,7 +79,6 @@ public class Vision extends Subsystem {
     } catch (Exception e) {
       return 0;
     }  
->>>>>>> cc7779ce477f86f64bfb07ccf46967ade0c467c9
   
   }
   
