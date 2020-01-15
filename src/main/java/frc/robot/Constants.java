@@ -5,10 +5,10 @@ package frc.robot;
 
 public class Constants {
 	//CAN bus channels for devices
-	public static final int    CANLeftFrontMasterController    = 1;
-	public static final int    CANRightFrontMasterController   = 3;
+	public static final int    CANLeftFrontMasterController    = 3;
+	public static final int    CANRightFrontMasterController   = 7;
 	public static final int    CANLeftFrontFollowerController  = 2;
-	public static final int    CANRightFrontFollowerController = 4;
+	public static final int    CANRightFrontFollowerController = 6;
 	public static final int    CANLiftMasterController         = 10;
 	public static final int    CANLiftFollowerController       = 12;
 	public static final int    CANIntakeController             = 8;

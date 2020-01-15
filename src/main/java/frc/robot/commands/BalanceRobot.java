@@ -33,10 +33,10 @@ public class BalanceRobot extends Command {
   @Override
   protected void execute() {
     //Measure the robot inclination
-    double zAccelleration = Robot.imu.getAccelZAverage();
+    /*double zAccelleration = Robot.imu.getAccelZAverage();
     double climberError = zAccelleration - Constants.ClimberTargetZ;
     climberPower = climberError * 5;//ToDo : Check polarity
-    Robot.habClimber.setClimberPower(climberPower);
+    Robot.habClimber.setClimberPower(climberPower);*/
   }
 
   // Make this return true when this Command no longer needs to run execute()
