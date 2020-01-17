@@ -5,10 +5,10 @@ package frc.robot;
 
 public class Constants {
 	//CAN bus channels for devices
-	public static final int    CANLeftFrontMasterController    = 1;
-	public static final int    CANRightFrontMasterController   = 3;
+	public static final int    CANLeftFrontMasterController    = 3;
+	public static final int    CANRightFrontMasterController   = 7;
 	public static final int    CANLeftFrontFollowerController  = 2;
-	public static final int    CANRightFrontFollowerController = 4;
+	public static final int    CANRightFrontFollowerController = 6;
 	public static final int    CANLiftMasterController         = 10;
 	public static final int    CANLiftFollowerController       = 12;
 	public static final int    CANIntakeController             = 8;
@@ -186,6 +186,9 @@ public class Constants {
 	public static final double PowerPortTargetHeight = 89.75; //In inches, center of target (2020: 6'9.25" from ground - bottom, 1'5" tall target)
 	public static final double LoadingBayTargetHeight = 16.5; //In inches, center of target (2020: 11" from ground - bottom, 11" tall target)
 	public static final double HomingModifier = 0.5; //For limiting the speed of homing in AlignWithTarget
+	public static final int VisionServoPort = 1;
+	public static final int VisionServoDown = 0;
+	public static final int VisionServoUp = 0;
 
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from

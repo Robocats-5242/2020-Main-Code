@@ -8,13 +8,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import com.analog.adis16470.frc.ADIS16470_IMU;
+//import com.analog.adis16470.frc.ADIS16470_IMU;
 import frc.robot.Robot;
 /**
  * Add your docs here.
  */
 public class Accelerometer extends Subsystem {
-
+/*
   public static ADIS16470_IMU imu;
   private static String CommandName = "Accelerometer";
 
@@ -41,7 +41,7 @@ public class Accelerometer extends Subsystem {
   } 
   public static double getAccelZ(){
     return imu.getAccelZ();
-  } 
+  } */
 
   @Override
   public void initDefaultCommand() {

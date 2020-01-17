@@ -9,12 +9,14 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.OI;
 
 /**
  * Add your docs here.
@@ -42,6 +44,8 @@ public class Vision extends Subsystem {
   public double y;
   double area;
 
+  boolean rumbleOnce = false;
+
   public Vision(){
     Robot.logMessage(CommandName, "constructor");
     if (Robot.isReal()){
@@ -65,14 +69,44 @@ public class Vision extends Subsystem {
     x = tx.getDouble(0.0);
     y = ty.getDouble(0.0);
     area = ta.getDouble(0.0);
+    SmartDashboard.putNumber("tx", x);
+    SmartDashboard.putNumber("ty", y);
+    SmartDashboard.putNumber("area", area);
     }else{
       //To Do: Develop Vision simulation
   }
+    if(Math.abs(x) < 2 && !rumbleOnce){
+      rumbler();
+      rumbleOnce = true;
+    } else if (Math.abs(x) > 2 && rumbleOnce) rumbleOnce = false;
   } 
   
   public double estimateDistancePowerPort(){ //Note: CANNOT use this method for Loading Bay. The Limelight is most likely too close in height to the Loading Bay target to make this method effective.
     double distance = (Constants.PowerPortTargetHeight-Constants.LimelightMountHeight) / Math.tan(Constants.LimelightMountAngle + x);
     return distance;
+  }
+
+  public void rumbler(){
+    OI.driveJoystick.setRumble(RumbleType.kLeftRumble, 1);
+    OI.driveJoystick.setRumble(RumbleType.kRightRumble, 1);
+    try{
+        Thread.sleep(100);
+    }catch (InterruptedException e){
+    }
+    OI.driveJoystick.setRumble(RumbleType.kLeftRumble, 0);
+    OI.driveJoystick.setRumble(RumbleType.kRightRumble, 0);
+    try{
+        Thread.sleep(100);
+    }catch (InterruptedException e){
+    }
+    OI.driveJoystick.setRumble(RumbleType.kLeftRumble, 1);
+    OI.driveJoystick.setRumble(RumbleType.kRightRumble, 1);
+    try{
+        Thread.sleep(100);
+    }catch (InterruptedException e){
+    }
+    OI.driveJoystick.setRumble(RumbleType.kLeftRumble, 0);
+    OI.driveJoystick.setRumble(RumbleType.kRightRumble, 0);
   }
 
   @Override

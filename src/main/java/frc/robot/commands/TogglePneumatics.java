@@ -18,14 +18,14 @@ public class TogglePneumatics extends Command {
   public TogglePneumatics(boolean state) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.pneumaticSystem);
+    //requires(Robot.pneumaticSystem);
     localState = state;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Pneumatics.setLiftPiston(localState);
+    //Pneumatics.setLiftPiston(localState);
   }
 
   // Called repeatedly when this Command is scheduled to run

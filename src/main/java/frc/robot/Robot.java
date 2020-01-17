@@ -36,11 +36,11 @@ public class Robot extends TimedRobot {
 
   public static DriveTrain driveTrain;
   public static Intake intakeSystem;
-  public static Lift liftSystem;
-  public static Pneumatics pneumaticSystem;
-  public static RobotAccelerometer imu;
+  //public static Lift liftSystem;
+  //public static Pneumatics pneumaticSystem;
+  //public static RobotAccelerometer imu;
   public static DrivesWithJoysticks driveIntake;
-  public static Climber habClimber;
+  //public static Climber habClimber;
 
   Faults _faults_L = new Faults();
   Faults _faults_R = new Faults();
@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
     //Historically we have found that if items are not added 
     SmartDashboard.putNumber("Left power", driveTrain.getLeftSpeedPercent());
     SmartDashboard.putNumber("Right power", driveTrain.getRightSpeedPercent());
-    SmartDashboard.putNumber("LiftPosition", liftSystem.getLiftPositionInches());
+    //SmartDashboard.putNumber("LiftPosition", liftSystem.getLiftPositionInches());
     SmartDashboard.putNumber("Left dist.", driveTrain.getLeftEncoderInches());
     SmartDashboard.putNumber("Right dist.", driveTrain.getRightEncoderInches());
     //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
@@ -61,10 +61,10 @@ public class Robot extends TimedRobot {
 //    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());
 //    SmartDashboard.putNumber("Gyro-Z", imu.getAngleZ());
     
-    SmartDashboard.putNumber("Accel-X", imu.getAccelX());
-    SmartDashboard.putNumber("Accel-Y", imu.getAccelY());
-    SmartDashboard.putNumber("Accel-Z", imu.getAccelZ());
-    SmartDashboard.putNumber("Accel-Z Ave.", imu.getAccelZAverage());
+    //SmartDashboard.putNumber("Accel-X", imu.getAccelX());
+    //SmartDashboard.putNumber("Accel-Y", imu.getAccelY());
+    //SmartDashboard.putNumber("Accel-Z", imu.getAccelZ());
+    //SmartDashboard.putNumber("Accel-Z Ave.", imu.getAccelZAverage());
 
   }
 
@@ -81,11 +81,11 @@ public class Robot extends TimedRobot {
     driveWithJoystick = new DrivesWithJoysticks();
     //OI must come after subsystems since it references commands which in turn reference sub-systems
     visionSystem = new Vision();
-    imu = new RobotAccelerometer();
+    //imu = new RobotAccelerometer();
     operatorInterface = new OI();
 
     //Make a note of the current angle of the accelerometer
-    imu.captureOffset();
+    //imu.captureOffset();
 
     updateSmartDashboard();
     
@@ -122,8 +122,7 @@ public class Robot extends TimedRobot {
 //    if (Robot.isSimulation() || ((Robot.isReal() && (Robot.useHardware() == false))))
       updateSimulations();
     //RobotAccelerometer.updateAveraging();
-    Robot.imu.updateAveraging();
-    Robot.visionSystem.updateVision();
+    //Robot.imu.updateAveraging();
     updateSmartDashboard();
   }
 
@@ -204,6 +203,7 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     DrivesWithJoysticks.updateDriveFromJoystick();
     driveTrain.updateDriveTrain();
+    visionSystem.updateVision();
     //intakeSystem.updateIntake();
   }
 
