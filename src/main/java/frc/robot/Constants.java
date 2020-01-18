@@ -186,9 +186,12 @@ public class Constants {
 	public static final double PowerPortTargetHeight = 89.75; //In inches, center of target (2020: 6'9.25" from ground - bottom, 1'5" tall target)
 	public static final double LoadingBayTargetHeight = 16.5; //In inches, center of target (2020: 11" from ground - bottom, 11" tall target)
 	public static final double HomingModifier = 0.5; //For limiting the speed of homing in AlignWithTarget
-	public static final int VisionServoPort = 1;
+	public static final int VisionErrorAllowed = 2;
+	public static final int VisionServoPort = 0;
 	public static final int VisionServoDown = 0;
 	public static final int VisionServoUp = 0;
+	public static final int rumbleCount = 10;
+	public static final int rumbleCountWait = 5;
 
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from

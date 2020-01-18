@@ -273,4 +273,7 @@ public class DriveTrain extends Subsystem {
     autoFlag = state;
   }
 
+  public boolean getAutoFlag(){
+    return autoFlag;
+  }
 }

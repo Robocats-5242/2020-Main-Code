@@ -9,15 +9,17 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.Faults;
 
 import edu.wpi.first.cameraserver.*;
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.StartCommand;
+import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 //import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 //import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DrivesWithJoysticks;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.SerialPort.Port;
@@ -41,11 +43,11 @@ public class Robot extends TimedRobot {
   //public static RobotAccelerometer imu;
   public static DrivesWithJoysticks driveIntake;
   //public static Climber habClimber;
+  public 
 
   Faults _faults_L = new Faults();
   Faults _faults_R = new Faults();
 
-  SerialPort visionPort = null;
   int loopCount = 0;
 
   private void updateSmartDashboard(){
@@ -97,7 +99,7 @@ public class Robot extends TimedRobot {
      // pneumaticsSmash.setClosedLoopControl(true);
     
      if (Robot.isReal() == true){
-      CameraServer.getInstance().startAutomaticCapture(0);
+      //CameraServer.getInstance().startAutomaticCapture(0);
       //CameraServer.getInstance().startAutomaticCapture(1);
      }
  
@@ -155,6 +157,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
+     
   }
 
   /**
@@ -163,11 +166,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     driveTrain.setAutoFlag(true);
+    AlignWithTarget.alignWithTarget();
   }
  
     @Override
   public void teleopInit() {  
-    driveTrain.setAutoFlag(false);  
+    driveTrain.setAutoFlag(false);
   } 
 
   /**
@@ -204,6 +208,7 @@ public class Robot extends TimedRobot {
     DrivesWithJoysticks.updateDriveFromJoystick();
     driveTrain.updateDriveTrain();
     visionSystem.updateVision();
+    visionSystem.rumbler();
     //intakeSystem.updateIntake();
   }
 

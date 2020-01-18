@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
  */
 public class OI {
 
-  public static Joystick buttonBoard =   new Joystick(Constants.ButtonController);
+  public Joystick buttonBoard =   new Joystick(Constants.ButtonController);
 //  private Joystick secondaryJoystick = new Joystick(1);
-  public static XboxController driveJoystick = new XboxController(Constants.MainController);
+  public XboxController driveJoystick = new XboxController(Constants.MainController);
 
   //ToDo : Need to check button assignments
   Button ButtonLiftOut =               new JoystickButton(driveJoystick, Constants.LiftExtendButton);//ToDo : Check which is in and which is out
