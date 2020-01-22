@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
   //public static RobotAccelerometer imu;
   public static DrivesWithJoysticks driveIntake;
   //public static Climber habClimber;
-  public 
+  public static Shooter shooter;
 
   Faults _faults_L = new Faults();
   Faults _faults_R = new Faults();
@@ -85,6 +85,7 @@ public class Robot extends TimedRobot {
     visionSystem = new Vision();
     //imu = new RobotAccelerometer();
     operatorInterface = new OI();
+    shooter = new Shooter();
 
     //Make a note of the current angle of the accelerometer
     //imu.captureOffset();
@@ -166,6 +167,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     driveTrain.setAutoFlag(true);
+    visionSystem.updateVision();
     AlignWithTarget.alignWithTarget();
   }
  
@@ -189,6 +191,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    Robot.shooter.shootShooter();
   }
 
   public static void logMessage(String module, String message){

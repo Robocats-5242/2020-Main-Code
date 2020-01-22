@@ -55,11 +55,10 @@ public class AlignWithTarget extends Command {
   }
 
   public static void alignWithTarget(){
-    Robot.visionSystem.updateVision();
     if(Robot.visionSystem.x > Constants.VisionErrorAllowed){ 
-      Robot.driveTrain.setSpeedPercentAuto(0, Math.abs(Robot.visionSystem.x) / -27 * Constants.HomingModifier);
+      Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier);
     }else if(Robot.visionSystem.x < -Constants.VisionErrorAllowed){
-      Robot.driveTrain.setSpeedPercentAuto(Math.abs(Robot.visionSystem.x) / -27 * Constants.HomingModifier, 0);
+      Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier);
     }else {
       Robot.driveTrain.setSpeedPercentAuto(0, 0);
     }
