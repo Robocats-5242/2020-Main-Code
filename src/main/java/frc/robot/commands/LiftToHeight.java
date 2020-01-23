@@ -28,7 +28,7 @@ public class LiftToHeight extends Command {
     Robot.logMessage(CommandName, "constructor - " + heightInches + " - " + offset + " - " + blocking);
         // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    //requires(Robot.liftSystem);
+    requires(Robot.liftSystem);
     localBlocking = blocking;
     localHeightInches = heightInches;    
     localOffset = offset;

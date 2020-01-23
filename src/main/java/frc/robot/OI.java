@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
  */
 public class OI {
 
-  public Joystick buttonBoard =   new Joystick(Constants.ButtonController);
+  private static Joystick buttonBoard =   new Joystick(Constants.ButtonController);
 //  private Joystick secondaryJoystick = new Joystick(1);
-  public XboxController driveJoystick = new XboxController(Constants.MainController);
+  private static XboxController driveJoystick = new XboxController(Constants.MainController);
 
   //ToDo : Need to check button assignments
   Button ButtonLiftOut =               new JoystickButton(driveJoystick, Constants.LiftExtendButton);//ToDo : Check which is in and which is out
@@ -79,6 +79,27 @@ public class OI {
     if (Robot.useJoysticks() == true){
       ButtonLiftIn.whenPressed(       new TogglePneumatics(false));
       ButtonLiftOut.whenPressed(      new TogglePneumatics(true));
+
+      ButtonIntakeIn.whileHeld(       new HandleCargo(Constants.IntakeStateIn));
+      ButtonIntakeOut.whileHeld(      new HandleCargo(Constants.IntakeStateOut));
+
+      ButtonCargoOutRover.whileHeld(  new LiftAndDepositCargo(Constants.CargoDepositRoverHeight));
+      ButtonCargoOutLow.whileHeld(    new LiftAndDepositCargo(Constants.CargoDepositLowHeight));
+      ButtonCargoOutMid.whileHeld(    new LiftAndDepositCargo(Constants.CargoDepositMidHeight));
+      ButtonCargoOutHigh.whileHeld(   new LiftAndDepositCargo(Constants.CargoDepositHighHeight));
+      ButtonCargoInGround.whileHeld(  new CollectCargo(Constants.CargoRetrieveLocationGround)); 
+      ButtonCargoInDepot.whileHeld(   new CollectCargo(Constants.CargoRetrieveLocationDepot));
+      
+      ButtonHatchOutLow.whileHeld(    new LiftAndDepositHatch(Constants.HatchDepositLowHeight));
+      ButtonHatchOutMid.whileHeld(    new LiftAndDepositHatch(Constants.HatchDepositMidHeight));
+      ButtonHatchOutHigh.whileHeld(   new LiftAndDepositHatch(Constants.HatchDepositHighHeight));
+      ButtonHatchInLow.whileHeld(     new LiftAndRetrieveHatch());
+      ButtonHatchLift.whenPressed(    new HandleHatch(Constants.HatchUpState, true));
+      ButtonHatchDrop.whenPressed(    new HandleHatch(Constants.HatchDownState, true));
+
+      ButtonSetDriveHeightButton.whenPressed(new LiftAndDepositCargo(Constants.DriveHeight));
+
+      ButtonHabClimb.whileHeld(       new BalanceRobot());
     }
   }
 
