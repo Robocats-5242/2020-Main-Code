@@ -51,11 +51,11 @@ public class DrivesWithJoysticks extends Command {
     targetLeftSpeed =  Robot.operatorInterface.getControllerStickLeft();
     targetRightSpeed = Robot.operatorInterface.getControllerStickRight();
 
-    if (Math.abs(targetLeftSpeed) < 0.10) {
+    if (Math.abs(targetLeftSpeed) < 0.15) {
       targetLeftSpeed = 0;
     }
 
-    if (Math.abs(targetRightSpeed) < 0.10) {
+    if (Math.abs(targetRightSpeed) < 0.15) {
       targetRightSpeed = 0;
     }
 
@@ -69,11 +69,6 @@ public class DrivesWithJoysticks extends Command {
     else if(Robot.operatorInterface.getControllerTriggerRight() > 0.05){
       targetLeftSpeed*=.5;
       targetRightSpeed*=.5;
-    }
-    
-    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonX)){
-      targetLeftSpeed = Constants.CrawlSpeed;
-      targetRightSpeed = Constants.CrawlSpeed;
     }
 
     newLeftSpeed = adjustSpeed(currentLeftSpeed, targetLeftSpeed, Constants.JoystickAccelleration, Constants.JoystickDecelleration);

@@ -16,6 +16,8 @@ import frc.robot.Robot;
 public class Accelerometer extends Subsystem {
 
   /*public static ADIS16470_IMU imu;
+/*
+  public static ADIS16470_IMU imu;
   private static String CommandName = "Accelerometer";
 
   public Accelerometer() {
