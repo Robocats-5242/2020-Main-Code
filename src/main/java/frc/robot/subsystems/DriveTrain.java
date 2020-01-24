@@ -69,7 +69,7 @@ public class DriveTrain extends Subsystem {
     //rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
     rightPidController.setFeedbackDevice(rightEncoder);
     //rightFront.setSensorPhase(Constants.DrivekSensorPhase);
-    rightFront.setInverted(Constants.DrivekMotorInvert);
+    rightFront.setInverted(!Constants.DrivekMotorInvert);
     //rightFront.configNominalOutputForward(0, Constants.DrivekTimeoutMs);
     //rightFront.configNominalOutputReverse(0, Constants.DrivekTimeoutMs);
     //rightFront.configPeakOutputForward(Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
@@ -91,7 +91,7 @@ public class DriveTrain extends Subsystem {
     //leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
     leftPidController.setFeedbackDevice(rightEncoder);
     //leftFront.setSensorPhase(Constants.DrivekSensorPhase);
-    leftFront.setInverted(!Constants.DrivekMotorInvert);
+    leftFront.setInverted(Constants.DrivekMotorInvert);
     //leftFront.configNominalOutputForward(0, Constants.DrivekTimeoutMs);
     //leftFront.configNominalOutputReverse(0, Constants.DrivekTimeoutMs);
     //leftFront.configPeakOutputForward(Constants.DrivePIDpeakoutput, Constants.DrivekTimeoutMs);
@@ -273,4 +273,7 @@ public class DriveTrain extends Subsystem {
     autoFlag = state;
   }
 
+  public boolean getAutoFlag(){
+    return autoFlag;
+  }
 }

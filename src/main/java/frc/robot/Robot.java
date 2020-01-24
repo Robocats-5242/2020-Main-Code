@@ -8,16 +8,20 @@
 package frc.robot;
 import com.ctre.phoenix.motorcontrol.Faults;
 
+
 //import edu.wpi.first.cameraserver.*;
+import edu.wpi.first.cameraserver.*;
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.StartCommand;
+import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 //import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 //import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DrivesWithJoysticks;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.SerialPort.Port;
@@ -38,14 +42,16 @@ public class Robot extends TimedRobot {
   public static Intake intakeSystem;
   public static Lift liftSystem;
   public static Pneumatics pneumaticSystem;
+  //public static Lift liftSystem;
+  //public static Pneumatics pneumaticSystem;
   //public static RobotAccelerometer imu;
   public static DrivesWithJoysticks driveIntake;
-  public static Climber habClimber;
+  //public static Climber habClimber;
+  public static Shooter shooter;
 
   Faults _faults_L = new Faults();
   Faults _faults_R = new Faults();
 
-  SerialPort visionPort = null;
   int loopCount = 0;
 
   private void updateSmartDashboard(){
@@ -69,7 +75,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Accel-Y", imu.getAccelY());
     SmartDashboard.putNumber("Accel-Z", imu.getAccelZ());
     SmartDashboard.putNumber("Accel-Z Ave.", imu.getAccelZAverage());*/
-
+    //SmartDashboard.putNumber("Accel-X", imu.getAccelX());
+    //SmartDashboard.putNumber("Accel-Y", imu.getAccelY());
+    //SmartDashboard.putNumber("Accel-Z", imu.getAccelZ());
+    //SmartDashboard.putNumber("Accel-Z Ave.", imu.getAccelZAverage());
   }
 
   /**
@@ -85,8 +94,10 @@ public class Robot extends TimedRobot {
     driveWithJoystick = new DrivesWithJoysticks();
     //OI must come after subsystems since it references commands which in turn reference sub-systems
     //visionSystem = new Vision();
+    visionSystem = new Vision();
     //imu = new RobotAccelerometer();
     operatorInterface = new OI();
+    shooter = new Shooter();
 
     //Make a note of the current angle of the accelerometer
     //imu.captureOffset();
@@ -160,6 +171,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
+     
   }
 
   /**
@@ -168,11 +180,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     driveTrain.setAutoFlag(true);
+    visionSystem.updateVision();
+    AlignWithTarget.alignWithTarget();
   }
  
     @Override
   public void teleopInit() {  
-    driveTrain.setAutoFlag(false);  
+    driveTrain.setAutoFlag(false);
   } 
 
   /**
@@ -190,6 +204,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    Robot.shooter.shootShooter();
   }
 
   public static void logMessage(String module, String message){
@@ -208,6 +223,8 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     DrivesWithJoysticks.updateDriveFromJoystick();
     driveTrain.updateDriveTrain();
+    visionSystem.updateVision();
+    visionSystem.rumbler();
     //intakeSystem.updateIntake();
   }
 
