@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("LiftPosition", liftSystem.getLiftPositionInches());
     SmartDashboard.putNumber("Left dist.", driveTrain.getLeftEncoderInches());
     SmartDashboard.putNumber("Right dist.", driveTrain.getRightEncoderInches());
+    SmartDashboard.putNumber("Left ticks", driveTrain.getLeftEncoderTicks());
     //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
 
 //    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
@@ -183,6 +184,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     doActivePeriodic();
+    shooter.shootShooter();
     driveTrain.setAutoFlag(false); 
   }
 
@@ -191,7 +193,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    Robot.shooter.shootShooter();
+    shooter.shootShooter();
   }
 
   public static void logMessage(String module, String message){

@@ -5,10 +5,10 @@ package frc.robot;
 
 public class Constants {
 	//CAN bus channels for devices
-	public static final int    CANLeftFrontMasterController    = 3;
-	public static final int    CANRightFrontMasterController   = 7;
-	public static final int    CANLeftFrontFollowerController  = 2;
-	public static final int    CANRightFrontFollowerController = 6;
+	public static final int    CANLeftFrontMasterController    = 6;
+	public static final int    CANRightFrontMasterController   = 2;
+	public static final int    CANLeftFrontFollowerController  = 7;
+	public static final int    CANRightFrontFollowerController = 3;
 	public static final int    CANLiftMasterController         = 10;
 	public static final int    CANLiftFollowerController       = 12;
 	public static final int    CANIntakeController             = 8;
@@ -26,13 +26,16 @@ public class Constants {
 	public static final int    DigUltrasonicEchoChannel        = 2;
 
 	//Drive train constants
-	public static final int    WheelCountsPerRev               = 4096;
+	public static final int    WheelCountsPerRev               = 42;
 	public static final double WheelDiameter                   = 6;//6 inch diameter
 	public static final double WheelCircumference              = Math.PI*WheelDiameter;
 	public static final double WheelTicksPerInch               = WheelCountsPerRev / WheelCircumference;
 	public static final int    SpeedMaxTicksPer100mS           = 8000;//ToDo : Need to measure
 	public static final double DriveStraightPGain              = 0.1;//ToDo : Need to tune
 	public static final double MaxAllowableTargetError         = 0.03;
+	public static final int MaxRPM = 2000;
+	public static final double gearRatioNorm = 0;
+	public static final double gearRatioShifted = 0;
 
 	//Lift constants
 	public static final double LiftSprocketCircumference       = 4;//16 teeth spaced at 1/4 inch
@@ -162,8 +165,8 @@ public class Constants {
 	public static final boolean DrivekMotorInvert     = true;
 	//kp, ki, kd, kf, izone, peak output
 	//ToDo : Need to set these parameters
-	public static final double  DrivePIDkP            = 0.3;
-	public static final double  DrivePIDkI            = 0.0;
+	public static final double  DrivePIDkP            = 0.00001;
+	public static final double  DrivePIDkI            = 1e-6;
 	public static final double  DrivePIDkD            = 0.0;
 	public static final double  DrivePIDkF            = 0.0;
 	public static final double  DrivePIDizone         = 0.0;
