@@ -5,15 +5,16 @@ package frc.robot;
 
 public class Constants {
 	//CAN bus channels for devices
-	public static final int    CANLeftFrontMasterController    = 6;
+	public static final int    CANLeftFrontMasterController    = 4;
 	public static final int    CANRightFrontMasterController   = 2;
-	public static final int    CANLeftFrontFollowerController  = 7;
+	public static final int    CANLeftFrontFollowerController  = 5;
 	public static final int    CANRightFrontFollowerController = 3;
 	public static final int    CANLiftMasterController         = 10;
 	public static final int    CANLiftFollowerController       = 12;
 	public static final int    CANIntakeController             = 8;
 	public static final int    CANClimberController            = 5;
 	public static final int    CANCrawlerController            = 1;  //change for actual id and check for robot 2
+	public static final int	   CANShooter 					   = 6;
 
 	//Pneumatic constants
 	public static final int     PneuStroke1Channel             = 0;
@@ -37,7 +38,7 @@ public class Constants {
 	public static final double GearRatioNorm = 0;
 	public static final double GearRatioShifted = 0;
 	public static final int MaxAccel = 2000;
-	public static final int MaxDecel = 1000;
+	public static final int MaxDecel = 1500;
 
 	//Lift constants
 	public static final double LiftSprocketCircumference       = 4;//16 teeth spaced at 1/4 inch
@@ -167,8 +168,8 @@ public class Constants {
 	public static final boolean DrivekMotorInvert     = true;
 	//kp, ki, kd, kf, izone, peak output
 	//ToDo : Need to set these parameters
-	public static final double  DrivePIDkP            = 0.000001;
-	public static final double  DrivePIDkI            = 1e-6;
+	public static final double  DrivePIDkP            = 1e-6; //1e-6 = 0.000001
+	public static final double  DrivePIDkI            = 1e-7;
 	public static final double  DrivePIDkD            = 0.0;
 	public static final double  DrivePIDkF            = 0.0;
 	public static final double  DrivePIDizone         = 0.0;

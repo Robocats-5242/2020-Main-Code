@@ -53,6 +53,7 @@ public class DriveTrain extends Subsystem {
   private boolean autoFlag = false;
   private double leftOldVelocity = 0;
   private double rightOldVelocity = 0;
+  private int decelLoopCount = 0;
 
   private void driveTrainInit(){
     rightFront    = new CANSparkMax(Constants.CANRightFrontMasterController, MotorType.kBrushless);
@@ -281,8 +282,8 @@ public class DriveTrain extends Subsystem {
 
   private void setSpeedPID(double leftVelocity, double rightVelocity, ControlType control){
     if (Robot.isReal() && Robot.useHardware()){
-      leftVelocity = deceleration(leftOldVelocity, leftVelocity);
-      rightVelocity = deceleration(rightOldVelocity, rightVelocity);
+      //leftVelocity = deceleration(leftOldVelocity, leftVelocity);
+      //rightVelocity = deceleration(rightOldVelocity, rightVelocity);
       leftPidController.setReference(leftVelocity, control, 0);
       rightPidController.setReference(rightVelocity, control, 0);
       
@@ -308,18 +309,22 @@ public class DriveTrain extends Subsystem {
 
   public double deceleration(double currVel, double targVel){ //Not decelerating... Loop time too fast???
     double deltaVel = targVel - currVel;
-    if(Math.abs(deltaVel) < Constants.MaxDecel){
-      currVel = targVel;
-      SmartDashboard.putString("Decelerating?", "No");
+    if(decelLoopCount == 3){
+      if(Math.abs(deltaVel) < Constants.MaxDecel){
+        currVel = targVel;
+        SmartDashboard.putString("Decelerating?", "No");
+      }
+      else if(targVel > currVel){
+        currVel = currVel + Math.sqrt(Constants.MaxDecel);
+        SmartDashboard.putString("Decelerating?", "Yes0");
+      }
+      else if(targVel < currVel){
+        currVel = currVel - Math.sqrt(Constants.MaxDecel);
+        SmartDashboard.putString("Decelerating?", "Yes1");
+      }
+      decelLoopCount = 0;
     }
-    else if(targVel > currVel){
-      currVel = currVel + Math.sqrt(Constants.MaxDecel);
-      SmartDashboard.putString("Decelerating?", "Yes0");
-    }
-    else if(targVel < currVel){
-      currVel = currVel - Math.sqrt(Constants.MaxDecel);
-      SmartDashboard.putString("Decelerating?", "Yes1");
-    }
+    decelLoopCount ++;
     return currVel;
   }
 
