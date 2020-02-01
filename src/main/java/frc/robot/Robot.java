@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Left dist.", driveTrain.getLeftEncoderInches());
     SmartDashboard.putNumber("Right dist.", driveTrain.getRightEncoderInches());
     SmartDashboard.putNumber("Left ticks", driveTrain.getLeftEncoderTicks());
+    SmartDashboard.putNumber("Right ticks", driveTrain.getRightEncoderTicks());
     //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
 
 //    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());

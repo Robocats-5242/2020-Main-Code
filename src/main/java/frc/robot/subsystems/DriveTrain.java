@@ -51,6 +51,8 @@ public class DriveTrain extends Subsystem {
   private double leftSpeedSimulation = 0;
   private double rightSpeedSimulation = 0;
   private boolean autoFlag = false;
+  private double leftOldVelocity = 0;
+  private double rightOldVelocity = 0;
 
   private void driveTrainInit(){
     rightFront    = new CANSparkMax(Constants.CANRightFrontMasterController, MotorType.kBrushless);
@@ -96,6 +98,9 @@ public class DriveTrain extends Subsystem {
     /* Set the quadrature (relative) sensor to match absolute */
     //rightFront.setSelectedSensorPosition(0, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
     rightPidController.setIZone(Constants.DrivePIDizone);
+    rightPidController.setSmartMotionMaxVelocity(Constants.MaxRPM, 0);
+    rightPidController.setSmartMotionMinOutputVelocity(0, 0);
+    rightPidController.setSmartMotionMaxAccel(Constants.MaxAccel, 0);
 
     //leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
     leftPidController.setFeedbackDevice(leftEncoder);
@@ -117,14 +122,17 @@ public class DriveTrain extends Subsystem {
     //leftFront.config_kD(Constants.DrivekkPIDLoopIdx, Constants.DrivePIDkD, Constants.DrivekTimeoutMs);
     leftPidController.setD(Constants.DrivePIDkD);
     leftPidController.setIZone(Constants.DrivePIDizone);
+    leftPidController.setSmartMotionMaxVelocity(Constants.MaxRPM, 0);
+    leftPidController.setSmartMotionMinOutputVelocity(0, 0);
+    leftPidController.setSmartMotionMaxAccel(Constants.MaxAccel, 0);
 
     //Set rampe rate. ToDo : Dynamically change PID in the joystick controlled code to effectively set different forward and backwards rates. Don't forget to configure for semi auto actions though !!
     //rightFront.configOpenloopRamp(.3, 1000);
     //leftFront.configOpenloopRamp(.3, 1000);
-    rightFront.setOpenLoopRampRate(.5);
-    leftFront.setOpenLoopRampRate(.5);
-    rightFront.setClosedLoopRampRate(.5);
-    leftFront.setClosedLoopRampRate(.5);
+    rightFront.setOpenLoopRampRate(.3);
+    leftFront.setOpenLoopRampRate(.3);
+    rightFront.setClosedLoopRampRate(.3);
+    leftFront.setClosedLoopRampRate(.3);
 
     /* set up followers */
     rightFollower.follow(rightFront);
@@ -186,7 +194,7 @@ public class DriveTrain extends Subsystem {
       return leftEncoderSimulation;
   }
 
-  private double getRightEncoderTicks(){
+  public double getRightEncoderTicks(){
     if (Robot.isReal() && Robot.useHardware())
       //return rightFront.getSelectedSensorPosition();
       return rightEncoder.getPosition();
@@ -224,7 +232,7 @@ public class DriveTrain extends Subsystem {
       leftCurrentPercent = leftCurrentPercentJoystick;
       rightCurrentPercent = rightCurrentPercentJoystick;
       //setSpeedRaw(leftCurrentPercent, rightCurrentPercent, ControlType.kDutyCycle);
-      setSpeedPID(leftCurrentPercent * Constants.MaxRPM, rightCurrentPercent * Constants.MaxRPM, ControlType.kVelocity);
+      setSpeedPID(leftCurrentPercent * Constants.MaxRPM, rightCurrentPercent * Constants.MaxRPM, ControlType.kSmartVelocity);
     }
   }
 
@@ -273,8 +281,12 @@ public class DriveTrain extends Subsystem {
 
   private void setSpeedPID(double leftVelocity, double rightVelocity, ControlType control){
     if (Robot.isReal() && Robot.useHardware()){
-      leftPidController.setReference(leftVelocity, control);
-      rightPidController.setReference(rightVelocity, control);
+      leftVelocity = deceleration(leftOldVelocity, leftVelocity);
+      rightVelocity = deceleration(rightOldVelocity, rightVelocity);
+      leftPidController.setReference(leftVelocity, control, 0);
+      rightPidController.setReference(rightVelocity, control, 0);
+      
+      
       SmartDashboard.putNumber("leftPIDOutput", leftFront.get());
       SmartDashboard.putNumber("rightPIDOutput", rightFront.get());
       SmartDashboard.putNumber("leftVelocity", leftEncoder.getVelocity());
@@ -282,7 +294,7 @@ public class DriveTrain extends Subsystem {
     }
     else
     {
-      if(control == ControlType.kVelocity){
+      if(control == ControlType.kVelocity || control == ControlType.kSmartVelocity){
         leftSpeedSimulation = leftVelocity / Constants.MaxRPM;
         rightSpeedSimulation = rightVelocity / Constants.MaxRPM;
       }else{
@@ -290,6 +302,25 @@ public class DriveTrain extends Subsystem {
         rightSpeedSimulation = rightVelocity;
       }
     }
+    leftOldVelocity = leftVelocity;
+    rightOldVelocity = rightVelocity;
+  }
+
+  public double deceleration(double currVel, double targVel){ //Not decelerating... Loop time too fast???
+    double deltaVel = targVel - currVel;
+    if(Math.abs(deltaVel) < Constants.MaxDecel){
+      currVel = targVel;
+      SmartDashboard.putString("Decelerating?", "No");
+    }
+    else if(targVel > currVel){
+      currVel = currVel + Math.sqrt(Constants.MaxDecel);
+      SmartDashboard.putString("Decelerating?", "Yes0");
+    }
+    else if(targVel < currVel){
+      currVel = currVel - Math.sqrt(Constants.MaxDecel);
+      SmartDashboard.putString("Decelerating?", "Yes1");
+    }
+    return currVel;
   }
 
   @Override
