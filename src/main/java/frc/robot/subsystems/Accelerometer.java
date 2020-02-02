@@ -8,40 +8,60 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-//import com.analog.adis16470.frc.ADIS16470_IMU;
+import com.ctre.phoenix.sensors.*;
+import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
+
+import frc.robot.Constants;
 import frc.robot.Robot;
 /**
  * Add your docs here.
  */
 public class Accelerometer extends Subsystem {
-/*
-  public static ADIS16470_IMU imu;
+
+  public static PigeonIMU imu;
   private static String CommandName = "Accelerometer";
 
   public Accelerometer() {
-    imu = new ADIS16470_IMU();
+    imu = new PigeonIMU(Constants.CANPigeon);
+  }
+
+  public static boolean isPigeonReady(){
+    if(imu.getState() == PigeonState.Ready) return true;
+    else return false;
   }
 
   public static double getAngleX(){
     //Robot.logMessage(CommandName, "getting angle");
-    return imu.getAngleX();
+    double[] accel = new double[3];
+    imu.getAccelerometerAngles(accel);
+    return accel[0];
   } 
   public static double getAngleY(){
-    return imu.getAngleY();
+    double[] accel = new double[3];
+    imu.getAccelerometerAngles(accel);
+    return accel[1];
   } 
   public static double getAngleZ(){
-    return imu.getAngleZ();
+    double[] accel = new double[3];
+    imu.getAccelerometerAngles(accel);
+    return accel[2];
   } 
 
-  public static double getAccelX(){
-    return imu.getAccelX();
+  public static short getAccelX(){
+    short[] accel = new short[3];
+    imu.getBiasedAccelerometer(accel);
+    return accel[0];
   } 
-  public static double getAccelY(){
-    return imu.getAccelY();
+  public static short getAccelY(){
+    short[] accel = new short[3];
+    imu.getBiasedAccelerometer(accel);
+    return accel[1];
   } 
-  public static double getAccelZ(){
-    return imu.getAccelZ();
-  } */
+  public static short getAccelZ(){
+    short[] accel = new short[3];
+    imu.getBiasedAccelerometer(accel);
+    return accel[2];
+  } 
 
   @Override
   public void initDefaultCommand() {

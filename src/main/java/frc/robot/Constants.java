@@ -15,6 +15,7 @@ public class Constants {
 	public static final int    CANClimberController            = 5;
 	public static final int    CANCrawlerController            = 1;  //change for actual id and check for robot 2
 	public static final int	   CANShooter 					   = 6;
+	public static final int	   CANPigeon					   = 24;
 
 	//Pneumatic constants
 	public static final int     PneuStroke1Channel             = 0;

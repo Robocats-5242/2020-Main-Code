@@ -26,7 +26,7 @@ public class Shooter extends Subsystem {
     private CANPIDController pidController;
     private CANEncoder encoder;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, accel;
-    double setPoint = 0;
+    private double setPoint = 0;
 
 
     public Shooter(){
@@ -44,7 +44,7 @@ public class Shooter extends Subsystem {
         kMaxOutput = 1; 
         kMinOutput = -1;
         maxRPM = 5700;
-        accel = 1000;
+        accel = 10000;
 
         pidController.setP(kP);
         pidController.setI(kI);
@@ -64,7 +64,7 @@ public class Shooter extends Subsystem {
         SmartDashboard.putNumber("Shooter Acceleration", accel);
     }
 
-    public void shootShooter(){
+    public void shoot(){
         double p = SmartDashboard.getNumber("P Gain", 0);
         double i = SmartDashboard.getNumber("I Gain", 0);
         double d = SmartDashboard.getNumber("D Gain", 0);
@@ -72,7 +72,7 @@ public class Shooter extends Subsystem {
         double ff = SmartDashboard.getNumber("Feed Forward", 0);
         double max = SmartDashboard.getNumber("Max Output", 0);
         double min = SmartDashboard.getNumber("Min Output", 0);
-        accel = SmartDashboard.getNumber("Acceleration", accel);
+        accel = SmartDashboard.getNumber("Acceleration", 0);
 
         if((p != kP)) { pidController.setP(p); kP = p; }
         if((i != kI)) { pidController.setI(i); kI = i; }

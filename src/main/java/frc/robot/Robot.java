@@ -185,7 +185,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     doActivePeriodic();
-    shooter.shootShooter();
+    shooter.shoot();
     driveTrain.setAutoFlag(false); 
   }
 
@@ -194,7 +194,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    shooter.shootShooter();
+    shooter.shoot();
   }
 
   public static void logMessage(String module, String message){
