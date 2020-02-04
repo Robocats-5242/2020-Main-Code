@@ -38,7 +38,7 @@ public class Constants {
 	public static final int MaxRPM = 4000;
 	public static final double GearRatioNorm = 0;
 	public static final double GearRatioShifted = 0;
-	public static final int MaxAccel = 2000;
+	public static final int MaxAccel = 5000;
 	public static final int MaxDecel = 1500;
 
 	//Lift constants
@@ -158,7 +158,7 @@ public class Constants {
 	//Drivetrain PID parameters
 	//Joystick parameters
 	public static final double  JoystickAccelleration = 0.07;
-	public static final double  JoystickDecelleration = 0.1;
+	public static final double  JoystickDecelleration = 0.2;
 	public static final double  CrawlSpeed            = 0.15;
 
 	//PID parameters

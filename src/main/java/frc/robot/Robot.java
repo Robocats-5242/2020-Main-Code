@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain();
     //liftSystem = new Lift();
     //pneumaticSystem = new Pneumatics();
-    //intakeSystem = new Intake();
+    intakeSystem = new Intake();
     driveWithJoystick = new DrivesWithJoysticks();
     //OI must come after subsystems since it references commands which in turn reference sub-systems
     visionSystem = new Vision();
@@ -185,7 +185,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     doActivePeriodic();
-    shooter.shoot();
     driveTrain.setAutoFlag(false); 
   }
 
@@ -215,7 +214,8 @@ public class Robot extends TimedRobot {
     driveTrain.updateDriveTrain();
     visionSystem.updateVision();
     visionSystem.rumbler();
-    //intakeSystem.updateIntake();
+    shooter.shoot();
+    intakeSystem.updateIntake();
   }
 
  }
