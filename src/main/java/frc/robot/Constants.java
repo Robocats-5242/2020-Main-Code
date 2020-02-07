@@ -20,15 +20,22 @@ public class Constants {
 	//Pneumatic constants
 	public static final int     PneuStroke1Channel             = 0;
 	public static final int     PneuStroke2Channel             = 1;
-	public static final boolean PneuLiftOut                    = true;//ToDo : Check correct order
-	public static final boolean PneuLiftIn                     = false;
+	public static final int     PneuStroke3Channel             = 2;
+	public static final int     PneuStroke4Channel             = 3;
+	public static final int     PneuStroke5Channel             = 4;
+	public static final boolean PneuIntakeOut                  = true;//ToDo : Check correct order
+	public static final boolean PneuIntakeIn                   = false;
+	public static final boolean PneuClimbIn 				   = false;
+	public static final boolean PneuClimbOut 				   = true;
+	public static final boolean PneuShiftHigh				   = true;
+	public static final boolean PneuShiftLow				   = false;
 
 	//Digital IO channels
-	public static final int    DigUltrasonicPingChannel        = 1;
-	public static final int    DigUltrasonicEchoChannel        = 2;
+	public static final int    DigUltrasonicPingChannel        = 4;
+	public static final int    DigUltrasonicEchoChannel        = 5;
 
 	//Drive train constants
-	public static final int    WheelCountsPerRev               = 42;
+	public static final int    WheelCountsPerRev               = 360;
 	public static final double WheelDiameter                   = 6;//6 inch diameter
 	public static final double WheelCircumference              = Math.PI*WheelDiameter;
 	public static final double WheelTicksPerInch               = WheelCountsPerRev / WheelCircumference;
@@ -38,7 +45,7 @@ public class Constants {
 	public static final int MaxRPM = 4000;
 	public static final double GearRatioNorm = 0;
 	public static final double GearRatioShifted = 0;
-	public static final int MaxAccel = 5000;
+	public static final int MaxAccel = 10000;
 	public static final int MaxDecel = 1500;
 
 	//Lift constants
@@ -75,9 +82,9 @@ public class Constants {
 	public static final int     IntakeStateHold  = 1;
 	public static final int     IntakeStateIn    = 2;
 	public static final int     IntakeStateOut   = 3;
-	public static final double  IntakeInSpeed    = 0.75;
+	public static final double  IntakeInSpeed    = 1;
 	public static final double  IntakeEjectSpeed = -1;
-	public static final double  IntakeHoldSpeed  = 0.25;
+	public static final double  IntakeHoldSpeed  = 0.6;
 	public static final double  DriveHeight      = 5.0;
 
 	//Hatch constants
@@ -169,8 +176,8 @@ public class Constants {
 	public static final boolean DrivekMotorInvert     = true;
 	//kp, ki, kd, kf, izone, peak output
 	//ToDo : Need to set these parameters
-	public static final double  DrivePIDkP            = 1e-6; //1e-6 = 0.000001
-	public static final double  DrivePIDkI            = 1e-7;
+	public static final double  DrivePIDkP            = 5e-6; //1e-6 = 0.000001
+	public static final double  DrivePIDkI            = 2e-7;
 	public static final double  DrivePIDkD            = 0.0;
 	public static final double  DrivePIDkF            = 0.0;
 	public static final double  DrivePIDizone         = 0.0;

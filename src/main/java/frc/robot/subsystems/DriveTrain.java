@@ -20,6 +20,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import frc.robot.Robot;
@@ -35,6 +36,8 @@ public class DriveTrain extends Subsystem {
   CANSparkMax leftFollower;
   CANEncoder rightEncoder;
   CANEncoder leftEncoder;
+  Encoder rightAutoEncoder;
+  Encoder leftAutoEncoder;
   CANPIDController rightPidController;
   CANPIDController leftPidController;
   Ultrasonic ultrasonicSensor;
@@ -62,6 +65,8 @@ public class DriveTrain extends Subsystem {
     leftFollower  = new CANSparkMax(Constants.CANLeftFrontFollowerController, MotorType.kBrushless);
     rightEncoder = new CANEncoder(rightFront);
     leftEncoder = new CANEncoder(leftFront);
+    rightAutoEncoder = new Encoder(0,1);
+    leftAutoEncoder = new Encoder(2,3);
     rightPidController= new CANPIDController(rightFront);
     leftPidController = new CANPIDController(leftFront);
 
@@ -75,6 +80,10 @@ public class DriveTrain extends Subsystem {
     leftFront.restoreFactoryDefaults();
     leftFollower.restoreFactoryDefaults();
 
+    rightAutoEncoder.setDistancePerPulse(Constants.WheelTicksPerInch);
+    leftAutoEncoder.setDistancePerPulse(Constants.WheelTicksPerInch);
+    rightAutoEncoder.setReverseDirection(false);
+    leftAutoEncoder.setReverseDirection(true);
      //Configure drive train
     //Make constants different to those used for the lift
     //rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.DrivekkPIDLoopIdx, Constants.DrivekTimeoutMs);
@@ -139,6 +148,7 @@ public class DriveTrain extends Subsystem {
     rightFollower.follow(rightFront);
     leftFollower.follow(leftFront);
 
+
     /*rightFollower.setInverted(InvertType.FollowMaster);
     leftFollower.setInverted(InvertType.FollowMaster);
     rightFront.setSensorPhase(true);
@@ -178,8 +188,8 @@ public class DriveTrain extends Subsystem {
     if (Robot.isReal() && Robot.useHardware()){
       //leftFront.setSelectedSensorPosition(0,0,Constants.DrivekTimeoutMs);
       //rightFront.setSelectedSensorPosition(0,0,Constants.DrivekTimeoutMs);
-      leftEncoder.setPosition(0);
-      rightEncoder.setPosition(0);
+      leftAutoEncoder.reset();
+      rightAutoEncoder.reset();
     }
     else{
       leftEncoderSimulation = 0;
@@ -190,7 +200,7 @@ public class DriveTrain extends Subsystem {
   public double getLeftEncoderTicks(){
     if (Robot.isReal() && Robot.useHardware())
       //return leftFront.getSelectedSensorPosition();
-      return leftEncoder.getPosition();
+      return leftAutoEncoder.get();
     else
       return leftEncoderSimulation;
   }
@@ -198,17 +208,17 @@ public class DriveTrain extends Subsystem {
   public double getRightEncoderTicks(){
     if (Robot.isReal() && Robot.useHardware())
       //return rightFront.getSelectedSensorPosition();
-      return rightEncoder.getPosition();
+      return rightAutoEncoder.get();
     else
       return rightEncoderSimulation;
   }
 
   public double getLeftEncoderInches(){
-    return getLeftEncoderTicks() / Constants.WheelTicksPerInch;
+    return leftAutoEncoder.getDistance();
   }
 
   public double getRightEncoderInches(){
-    return getRightEncoderTicks() / Constants.WheelTicksPerInch;
+    return rightAutoEncoder.getDistance();
   }
 
   public void setSpeedPercentJoystick(double leftSpeed, double rightSpeed){
@@ -288,8 +298,8 @@ public class DriveTrain extends Subsystem {
       rightPidController.setReference(rightVelocity, control, 0);
       
       
-      SmartDashboard.putNumber("leftPIDOutput", leftFront.get());
-      SmartDashboard.putNumber("rightPIDOutput", rightFront.get());
+      SmartDashboard.putNumber("leftSetpoint", leftVelocity);
+      SmartDashboard.putNumber("rightSetpoint", rightVelocity);
       SmartDashboard.putNumber("leftVelocity", leftEncoder.getVelocity());
       SmartDashboard.putNumber("rightVelocity", rightEncoder.getVelocity());
     }

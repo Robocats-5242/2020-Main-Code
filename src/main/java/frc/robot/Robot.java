@@ -193,6 +193,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    intakeSystem.updateIntake();
     shooter.shoot();
   }
 

@@ -83,13 +83,10 @@ public class Shooter extends Subsystem {
         kMinOutput = min; kMaxOutput = max; 
         }
         pidController.setSmartMotionMaxAccel(accel, 0);*/
-        if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonX)){
-            //shooter2.set(.5);
-            setPoint = 0.6 * maxRPM;
-        }else if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonY)){
+        if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonY)){
             setPoint = 0.8 * maxRPM;
             //shooter2.set(.5);
-        }else if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonB)){
+        }else if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonX)){
             setPoint = 0;
             //shooter2.set(0);
         }

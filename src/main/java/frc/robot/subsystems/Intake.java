@@ -26,6 +26,7 @@ public class Intake extends Subsystem {
     Robot.logMessage(CommandName, "constructor");
     if (Robot.isReal() && Robot.useHardware()){
       intake = new VictorSP(1);
+      intake.setInverted(true);
     }
   }
 
@@ -43,6 +44,7 @@ public class Intake extends Subsystem {
   }
 
   public void updateIntake(){
+    detectIntakeSpeed();
     intakeSpeed = targetIntakeSpeed;
     intake.set(intakeSpeed);
 
