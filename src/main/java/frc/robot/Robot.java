@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   //Command m_autonomousCommand;
   //SendableChooser<Command> m_chooser = new SendableChooser<>();
   Command driveWithJoystick;
+  Command driveToPosition;
   //Command liftToPosition;
   public static Hand leftStick = Hand.kLeft;
   public static Hand rightStick = Hand.kRight;
@@ -160,7 +161,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
-     
   }
 
   /**
@@ -168,9 +168,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    DriveToPosition.driveToPosition(20, 0.5, 20);
     driveTrain.setAutoFlag(true);
-    visionSystem.updateVision();
-    AlignWithTarget.alignWithTarget();
+    //visionSystem.updateVision();
+    //AlignWithTarget.alignWithTarget();
+    
   }
  
     @Override

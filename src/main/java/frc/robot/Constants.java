@@ -45,7 +45,7 @@ public class Constants {
 	public static final int MaxRPM = 4000;
 	public static final double GearRatioNorm = 0;
 	public static final double GearRatioShifted = 0;
-	public static final int MaxAccel = 10000;
+	public static final int MaxAccel = 50000;
 	public static final int MaxDecel = 1500;
 
 	//Lift constants
@@ -176,8 +176,8 @@ public class Constants {
 	public static final boolean DrivekMotorInvert     = true;
 	//kp, ki, kd, kf, izone, peak output
 	//ToDo : Need to set these parameters
-	public static final double  DrivePIDkP            = 5e-6; //1e-6 = 0.000001
-	public static final double  DrivePIDkI            = 2e-7;
+	public static final double  DrivePIDkP            = 7e-5; 
+	public static final double  DrivePIDkI            = 4e-7;
 	public static final double  DrivePIDkD            = 0.0;
 	public static final double  DrivePIDkF            = 0.0;
 	public static final double  DrivePIDizone         = 0.0;

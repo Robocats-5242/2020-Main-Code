@@ -8,14 +8,15 @@
 package frc.robot.commands;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class DriveToPosition extends Command {
-  private double localDistanceInches;
-  private double localSpeed;
-  private double localStopDistance;
-  private int direction;
-  private boolean driveStopped = false;
+  private static double localDistanceInches;
+  private static double localSpeed;
+  private static double localStopDistance;
+  private static int direction;
+  private static boolean driveStopped = false;
   private String CommandName = "DriveToPosition";
 
   public DriveToPosition(double distanceInches, double speed, double stopDistance) {
@@ -46,7 +47,7 @@ public class DriveToPosition extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
+    SmartDashboard.putString("Drive to Pos Running?", "Yes");
     double distanceTraveled;
     double leftDistanceTraveled;
     double rightDistanceTraveled;
@@ -80,6 +81,7 @@ public class DriveToPosition extends Command {
   @Override
   protected void end() {
     Robot.logMessage(CommandName, "end");
+    SmartDashboard.putString("Drive to Pos Running?", "No more");
     //Robot.driveTrain.setSpeedPercent(0, 0);
     Robot.driveTrain.setAutoFlag(false);//Return control back to the joystick
   }
@@ -92,4 +94,35 @@ public class DriveToPosition extends Command {
     //Robot.driveTrain.setSpeedPercent(0, 0);
     Robot.driveTrain.setAutoFlag(false);//Return control back to the joystick
   }
-}
+
+  public static void driveToPosition(double distanceInches, double speed, double stopDistance){
+    localDistanceInches = distanceInches;
+    localSpeed = speed;
+    localStopDistance = stopDistance;
+    if (localDistanceInches < 0)
+      direction = -1;
+    else
+      direction = 1;
+    SmartDashboard.putString("Drive to Pos Running?", "Yes");
+      double distanceTraveled;
+      double leftDistanceTraveled;
+      double rightDistanceTraveled;
+      double leftRightDistanceDelta;
+      double leftRightSpeedCorrection;
+
+      leftDistanceTraveled  = Robot.driveTrain.getLeftEncoderInches();
+      rightDistanceTraveled = Robot.driveTrain.getRightEncoderInches(); 
+      distanceTraveled = (leftDistanceTraveled + rightDistanceTraveled) / 2;//Average the left and right encoders
+      if (Math.abs(distanceTraveled) >= Math.abs(localDistanceInches)){//Check if gone the entire distance (note, direction is important)
+        driveStopped = true;
+      }
+      else if ((Robot.driveTrain.getUltrasonicRange() < localStopDistance) && (localDistanceInches > 0.0)){//Check if too close. Can't use for reverse, but don't need at the moment
+        driveStopped = true;
+      }
+      else{//Otherwise make sure driving straight
+        leftRightDistanceDelta = leftDistanceTraveled - rightDistanceTraveled;
+        leftRightSpeedCorrection = leftRightDistanceDelta * Constants.DriveStraightPGain;
+        Robot.driveTrain.setSpeedPercentAuto(direction * (localSpeed - leftRightSpeedCorrection), direction * (localSpeed + leftRightSpeedCorrection));
+      }
+    }
+} 

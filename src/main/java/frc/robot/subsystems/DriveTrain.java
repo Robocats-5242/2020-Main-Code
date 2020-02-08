@@ -139,10 +139,10 @@ public class DriveTrain extends Subsystem {
     //Set rampe rate. ToDo : Dynamically change PID in the joystick controlled code to effectively set different forward and backwards rates. Don't forget to configure for semi auto actions though !!
     //rightFront.configOpenloopRamp(.3, 1000);
     //leftFront.configOpenloopRamp(.3, 1000);
-    rightFront.setOpenLoopRampRate(.3);
-    leftFront.setOpenLoopRampRate(.3);
-    rightFront.setClosedLoopRampRate(.3);
-    leftFront.setClosedLoopRampRate(.3);
+    //rightFront.setOpenLoopRampRate(.3);
+    //leftFront.setOpenLoopRampRate(.3);
+    //rightFront.setClosedLoopRampRate(.3);
+    //leftFront.setClosedLoopRampRate(.3);
 
     /* set up followers */
     rightFollower.follow(rightFront);
