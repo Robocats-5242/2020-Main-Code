@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.command.Command;
  * An example command.  You can replace me with your own command.
  */
 public class DrivesWithJoysticks extends Command {
-  private static String CommandName = "DrivesWithJoysticks";
   
   public DrivesWithJoysticks() {
     // Use requires() here to declare subsystem dependencies

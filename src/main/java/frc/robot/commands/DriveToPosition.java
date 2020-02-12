@@ -51,8 +51,8 @@ public class DriveToPosition extends Command {
     double distanceTraveled;
     double leftDistanceTraveled;
     double rightDistanceTraveled;
-    double leftRightDistanceDelta;
-    double leftRightSpeedCorrection;
+    //double leftRightDistanceDelta;
+    //double leftRightSpeedCorrection;
 
     leftDistanceTraveled  = Robot.driveTrain.getLeftEncoderInches();
     rightDistanceTraveled = Robot.driveTrain.getRightEncoderInches(); 
@@ -60,15 +60,15 @@ public class DriveToPosition extends Command {
     if (Math.abs(distanceTraveled) >= Math.abs(localDistanceInches)){//Check if gone the entire distance (note, direction is important)
       driveStopped = true;
     }
-    else if ((Robot.driveTrain.getUltrasonicRange() < localStopDistance) && (localDistanceInches > 0.0)){//Check if too close. Can't use for reverse, but don't need at the moment
+    /*else if ((Robot.driveTrain.getUltrasonicRange() < localStopDistance) && (localDistanceInches > 0.0)){//Check if too close. Can't use for reverse, but don't need at the moment
       driveStopped = true;
-    }
+    }*/
     else{//Otherwise make sure driving straight
-      leftRightDistanceDelta = leftDistanceTraveled - rightDistanceTraveled;
-      leftRightSpeedCorrection = leftRightDistanceDelta * Constants.DriveStraightPGain;
-      Robot.driveTrain.setSpeedPercentAuto(direction * (localSpeed - leftRightSpeedCorrection), direction * (localSpeed + leftRightSpeedCorrection));
+      //leftRightDistanceDelta = leftDistanceTraveled - rightDistanceTraveled;
+      //leftRightSpeedCorrection = leftRightDistanceDelta * Constants.DriveStraightPGain;
+      Robot.driveTrain.setSpeedPercentAuto(direction * (localSpeed/* - leftRightSpeedCorrection*/), direction * (localSpeed/* + leftRightSpeedCorrection*/));
     }
-    
+    Robot.driveTrain.updateDriveTrain();
 }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -107,8 +107,8 @@ public class DriveToPosition extends Command {
       double distanceTraveled;
       double leftDistanceTraveled;
       double rightDistanceTraveled;
-      double leftRightDistanceDelta;
-      double leftRightSpeedCorrection;
+      //double leftRightDistanceDelta;
+      //double leftRightSpeedCorrection;
 
       leftDistanceTraveled  = Robot.driveTrain.getLeftEncoderInches();
       rightDistanceTraveled = Robot.driveTrain.getRightEncoderInches(); 
@@ -116,13 +116,11 @@ public class DriveToPosition extends Command {
       if (Math.abs(distanceTraveled) >= Math.abs(localDistanceInches)){//Check if gone the entire distance (note, direction is important)
         driveStopped = true;
       }
-      else if ((Robot.driveTrain.getUltrasonicRange() < localStopDistance) && (localDistanceInches > 0.0)){//Check if too close. Can't use for reverse, but don't need at the moment
-        driveStopped = true;
-      }
       else{//Otherwise make sure driving straight
-        leftRightDistanceDelta = leftDistanceTraveled - rightDistanceTraveled;
-        leftRightSpeedCorrection = leftRightDistanceDelta * Constants.DriveStraightPGain;
-        Robot.driveTrain.setSpeedPercentAuto(direction * (localSpeed - leftRightSpeedCorrection), direction * (localSpeed + leftRightSpeedCorrection));
+        //leftRightDistanceDelta = leftDistanceTraveled - rightDistanceTraveled;
+        //leftRightSpeedCorrection = leftRightDistanceDelta * Constants.DriveStraightPGain;
+        Robot.driveTrain.setSpeedPercentAuto(direction * (localSpeed), direction * (localSpeed));
       }
+      Robot.driveTrain.updateDriveTrain();
     }
 } 

@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
@@ -33,7 +32,15 @@ public class AlignWithTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
+    if(Robot.visionSystem.x > Constants.VisionErrorAllowed){ 
+      Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier);
+    }else if(Robot.visionSystem.x < -Constants.VisionErrorAllowed){
+      Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier);
+    }else {
+      Robot.driveTrain.setSpeedPercentAuto(0, 0);
+      isDone = true;
+    }
+    Robot.driveTrain.updateDriveTrain();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -45,6 +52,8 @@ public class AlignWithTarget extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.driveTrain.setSpeedPercentAuto(0, 0);
+    Robot.driveTrain.setAutoFlag(false);
   }
   
 

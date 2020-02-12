@@ -80,6 +80,11 @@ public class DriveTrain extends Subsystem {
     leftFront.restoreFactoryDefaults();
     leftFollower.restoreFactoryDefaults();
 
+    rightFront.clearFaults();
+    leftFront.clearFaults();
+    rightFollower.clearFaults();
+    leftFollower.clearFaults();
+
     rightAutoEncoder.setDistancePerPulse(Constants.WheelTicksPerInch);
     leftAutoEncoder.setDistancePerPulse(Constants.WheelTicksPerInch);
     rightAutoEncoder.setReverseDirection(false);
@@ -237,13 +242,15 @@ public class DriveTrain extends Subsystem {
     if (autoFlag == true){
       leftCurrentPercent = leftCurrentPercentAuto;
       rightCurrentPercent = rightCurrentPercentAuto;
-      setSpeedRaw(leftCurrentPercent, rightCurrentPercent);
+      setSpeedPID(leftCurrentPercent * Constants.MaxRPM, rightCurrentPercent * Constants.MaxRPM, ControlType.kSmartVelocity);
+      SmartDashboard.putString("Is autoFlagged?", "YES");
     }
     else{
       leftCurrentPercent = leftCurrentPercentJoystick;
       rightCurrentPercent = rightCurrentPercentJoystick;
       //setSpeedRaw(leftCurrentPercent, rightCurrentPercent, ControlType.kDutyCycle);
       setSpeedPID(leftCurrentPercent * Constants.MaxRPM, rightCurrentPercent * Constants.MaxRPM, ControlType.kSmartVelocity);
+      SmartDashboard.putString("Is autoFlagged?", "NO");
     }
   }
 

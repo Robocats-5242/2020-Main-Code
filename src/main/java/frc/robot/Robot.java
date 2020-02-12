@@ -161,6 +161,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
+    driveToPosition = new DriveToPosition(20, 0.5, 20);
+    driveToPosition.start();
   }
 
   /**
@@ -168,11 +170,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    DriveToPosition.driveToPosition(20, 0.5, 20);
     driveTrain.setAutoFlag(true);
+    Scheduler.getInstance().run();
     //visionSystem.updateVision();
     //AlignWithTarget.alignWithTarget();
-    
   }
  
     @Override
