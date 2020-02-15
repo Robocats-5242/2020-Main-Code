@@ -18,50 +18,54 @@ import frc.robot.Robot;
  */
 public class Accelerometer extends Subsystem {
 
-  public static PigeonIMU imu;
+  public PigeonIMU imu;
   private static String CommandName = "Accelerometer";
 
   public Accelerometer() {
     imu = new PigeonIMU(Constants.CANPigeon);
   }
 
-  public static boolean isPigeonReady(){
+  public boolean isPigeonReady(){
     if(imu.getState() == PigeonState.Ready) return true;
     else return false;
   }
 
-  public static double getAngleX(){
+  public double getAngleX(){
     //Robot.logMessage(CommandName, "getting angle");
-    double[] accel = new double[3];
-    imu.getAccelerometerAngles(accel);
+    double[] ypr = new double[3];
+    imu.getYawPitchRoll(ypr);
+    return ypr[2];
+  } 
+  public double getAngleY(){
+    double[] ypr = new double[3];
+    imu.getYawPitchRoll(ypr);
+    return ypr[1];
+  } 
+  public double getAngleZ(){
+    double[] ypr = new double[3];
+    imu.getYawPitchRoll(ypr);
+    return ypr[0]; //CCW is positive, CW is neg
+  } 
+
+  public short getAccelX(){
+    short[] accel = new short[3];
+    imu.getBiasedAccelerometer(accel);
     return accel[0];
   } 
-  public static double getAngleY(){
-    double[] accel = new double[3];
-    imu.getAccelerometerAngles(accel);
+  public short getAccelY(){
+    short[] accel = new short[3];
+    imu.getBiasedAccelerometer(accel);
     return accel[1];
   } 
-  public static double getAngleZ(){
-    double[] accel = new double[3];
-    imu.getAccelerometerAngles(accel);
+  public short getAccelZ(){
+    short[] accel = new short[3];
+    imu.getBiasedAccelerometer(accel);
     return accel[2];
   } 
 
-  public static short getAccelX(){
-    short[] accel = new short[3];
-    imu.getBiasedAccelerometer(accel);
-    return accel[0];
-  } 
-  public static short getAccelY(){
-    short[] accel = new short[3];
-    imu.getBiasedAccelerometer(accel);
-    return accel[1];
-  } 
-  public static short getAccelZ(){
-    short[] accel = new short[3];
-    imu.getBiasedAccelerometer(accel);
-    return accel[2];
-  } 
+  public void resetPigeonYaw(){
+    imu.setYaw(0);
+  }
 
   @Override
   public void initDefaultCommand() {

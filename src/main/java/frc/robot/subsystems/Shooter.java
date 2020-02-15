@@ -17,41 +17,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Shooter extends Subsystem {
 
-    //static VictorSP shooter2;
     private CANSparkMax shooter1;
     private CANPIDController pidController;
     private CANEncoder encoder;
-    public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, accel;
     double setPoint = 0;
 
 
 
     public Shooter(){
-        //shooter2 = new VictorSP(1);
         shooter1 = new CANSparkMax(Constants.CANShooter, MotorType.kBrushless);
         shooter1.restoreFactoryDefaults();
         pidController = shooter1.getPIDController();
         encoder = shooter1.getEncoder();
-
-        kP = 7e-5; 
-        kI = 2e-7;
-        kD = 0; 
-        kIz = 0; 
-        kFF = 0; 
-        kMaxOutput = 1; 
-        kMinOutput = -1;
-        maxRPM = 5700;
-        accel = 10000;
         setPoint = 0;
 
-        pidController.setP(kP);
-        pidController.setI(kI);
-        pidController.setD(kD);
-        pidController.setIZone(kIz);
-        pidController.setFF(kFF);
-        pidController.setOutputRange(kMinOutput, kMaxOutput);
-        pidController.setSmartMotionMaxVelocity(maxRPM, 0);
-        pidController.setSmartMotionMaxAccel(accel, 0);
+        pidController.setP(Constants.shooterkP);
+        pidController.setI(Constants.shooterkI);
+        pidController.setD(Constants.shooterkD);
+        pidController.setIZone(Constants.shooterkIz);
+        pidController.setFF(Constants.shooterkFF);
+        pidController.setOutputRange(Constants.shooterkMinOutput, Constants.shooterkMaxOutput);
+        pidController.setSmartMotionMaxVelocity(Constants.maxShooterRPM, 0);
+        pidController.setSmartMotionMaxAccel(Constants.shooterAccel, 0);
 
         /*SmartDashboard.putNumber("Shooter P Gain", kP);
         SmartDashboard.putNumber("Shooter I Gain", kI);
@@ -63,7 +50,7 @@ public class Shooter extends Subsystem {
         SmartDashboard.putNumber("Shooter Acceleration", accel);*/
     }
 
-    public void shoot(){
+    public void shoot(boolean autoShoot){
         /*double p = SmartDashboard.getNumber("P Gain", 0);
         double i = SmartDashboard.getNumber("I Gain", 0);
         double d = SmartDashboard.getNumber("D Gain", 0);
@@ -83,12 +70,17 @@ public class Shooter extends Subsystem {
         kMinOutput = min; kMaxOutput = max; 
         }
         pidController.setSmartMotionMaxAccel(accel, 0);*/
-        if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonY)){
-            setPoint = 0.8 * maxRPM;
-            //shooter2.set(.5);
-        }else if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonX)){
-            setPoint = 0;
-            //shooter2.set(0);
+        if(!Robot.driveTrain.getAutoFlag()){
+            if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonY)){
+                setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
+            }else if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonX)){
+                setPoint = 0;
+            }
+        }else{
+            if(autoShoot)
+                setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
+            else
+                setPoint = 0;
         }
 
         pidController.setReference(setPoint, ControlType.kSmartVelocity);

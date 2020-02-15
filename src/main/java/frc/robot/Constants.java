@@ -57,7 +57,7 @@ public class Constants {
 	public static final double LiftManualSpeed                 = 4.0/50;//4 inches per second since loops at 50 itterations / second
 
 	//Auto constants
-	public static final double AutoInSpeed                = 0.4;//Speed at which the semi-auto moves towards the target
+	public static final double AutoInSpeed                = 0.5;//Speed at which the semi-auto moves towards the target
 	public static final double AutoOutSpeed               = 0.6;//Speed at which the semi-auto moves away from the target
 	public static final double AutoStopFromDistanceCargo  = 6.0;//Distance from the target to stop for cargo (account for the hook)
 	public static final double AutoStopFromDistanceHatch  = 4.0;//Distance from the target to stop for hatches (needs to be inside target)
@@ -206,6 +206,18 @@ public class Constants {
 	public static final int VisionServoUp = 0;
 	public static final int rumbleCount = 10;
 	public static final int rumbleCountWait = 5;
+
+	//Shooter parameters
+	public static final double maxShooterSpeed = 0.8;
+	public static final int maxShooterRPM = 5700;
+	public static final int shooterAccel = 10000;
+	public static final double shooterkP = 7e-5;
+	public static final double shooterkI = 2e-7;
+	public static final double shooterkD = 0;
+	public static final double shooterkIz = 0;
+	public static final double shooterkFF = 0;
+	public static final double shooterkMaxOutput = 1;
+	public static final double shooterkMinOutput = -1;
 
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from

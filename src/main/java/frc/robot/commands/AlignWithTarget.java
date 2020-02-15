@@ -61,6 +61,8 @@ public class AlignWithTarget extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.driveTrain.setSpeedPercentAuto(0, 0);
+    Robot.driveTrain.setAutoFlag(false);
   }
 
   public static void alignWithTarget(){

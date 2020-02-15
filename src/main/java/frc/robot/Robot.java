@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
   public static Intake intakeSystem;
   //public static Lift liftSystem;
   //public static Pneumatics pneumaticSystem;
-  //public static RobotAccelerometer imu;
+  public static Accelerometer imu;
   public static DrivesWithJoysticks driveIntake;
   //public static Climber habClimber;
   public static Shooter shooter;
@@ -71,6 +71,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Accel-Z", imu.getAccelZ());
     //SmartDashboard.putNumber("Accel-Z Ave.", imu.getAccelZAverage());
 
+    SmartDashboard.putNumberArray("CAN Errors :{", driveTrain.getCANErrors());
   }
 
   /**
@@ -86,7 +87,7 @@ public class Robot extends TimedRobot {
     driveWithJoystick = new DrivesWithJoysticks();
     //OI must come after subsystems since it references commands which in turn reference sub-systems
     visionSystem = new Vision();
-    //imu = new RobotAccelerometer();
+    imu = new Accelerometer();
     operatorInterface = new OI();
     shooter = new Shooter();
 
@@ -161,6 +162,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
+    imu.resetPigeonYaw();
     driveToPosition = new DriveToPosition(20, 0.5, 20);
     driveToPosition.start();
   }
@@ -197,7 +199,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     intakeSystem.updateIntake();
-    shooter.shoot();
+    shooter.shoot(false);
   }
 
   public static void logMessage(String module, String message){
@@ -218,7 +220,7 @@ public class Robot extends TimedRobot {
     driveTrain.updateDriveTrain();
     visionSystem.updateVision();
     visionSystem.rumbler();
-    shooter.shoot();
+    shooter.shoot(false);
     intakeSystem.updateIntake();
   }
 

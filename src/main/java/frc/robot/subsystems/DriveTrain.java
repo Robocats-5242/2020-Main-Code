@@ -364,4 +364,15 @@ public class DriveTrain extends Subsystem {
   public boolean getAutoFlag(){
     return autoFlag;
   }
+
+  public double[] getCANErrors(){
+    double[] errors = new double[4];
+    for(int i = 0; i < 4; i++){
+      if(i == 0) errors[i] = (double) rightFront.getFaults();
+      if(i == 1) errors[i] = (double) rightFollower.getFaults();
+      if(i == 2) errors[i] = (double) leftFront.getFaults();
+      if(i == 3) errors[i] = (double) leftFollower.getFaults();
+    }
+    return errors;
+  }
 }
