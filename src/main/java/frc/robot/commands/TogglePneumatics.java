@@ -9,22 +9,29 @@ package frc.robot.commands;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
 //import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.Pneumatics;
 
 public class TogglePneumatics extends Command {
   private boolean localState;
-  public TogglePneumatics(boolean state) {
+  private int localSystem;
+
+  public TogglePneumatics(int system, boolean state) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     //requires(Robot.pneumaticSystem);
     localState = state;
+    localSystem = system;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    if(localSystem == Constants.PneuSystemIntake) Pneumatics.setIntakePiston(localState);
+    if(localSystem == Constants.PneuSystemShifter) Pneumatics.setShifterPiston(localState);
+    if(localSystem == Constants.PneuSystemClimber) Pneumatics.setClimbPiston(localState);
     //Pneumatics.setLiftPiston(localState);
   }
 

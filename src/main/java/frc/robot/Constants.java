@@ -29,6 +29,9 @@ public class Constants {
 	public static final boolean PneuClimbOut 				   = true;
 	public static final boolean PneuShiftHigh				   = true;
 	public static final boolean PneuShiftLow				   = false;
+	public static final int 	PneuSystemIntake			   = 0;
+	public static final int 	PneuSystemShifter			   = 1;
+	public static final int 	PneuSystemClimber			   = 2;
 
 	//Digital IO channels
 	public static final int    DigUltrasonicPingChannel        = 4;
@@ -48,14 +51,6 @@ public class Constants {
 	public static final int MaxAccel = 50000;
 	public static final int MaxDecel = 1500;
 
-	//Lift constants
-	public static final double LiftSprocketCircumference       = 4;//16 teeth spaced at 1/4 inch
-	public static final double LiftCountsPerRev                = 4096;
-	public static final double LiftTicksPerInch                = (LiftCountsPerRev / LiftSprocketCircumference) / 2;//Divided by 2 because of two-stage lift
-	public static final double LiftMaxHeight                   = 81;
-	public static final double LiftPositionTolerance           = 2;
-	public static final double LiftManualSpeed                 = 4.0/50;//4 inches per second since loops at 50 itterations / second
-
 	//Auto constants
 	public static final double AutoInSpeed                = 0.5;//Speed at which the semi-auto moves towards the target
 	public static final double AutoOutSpeed               = 0.6;//Speed at which the semi-auto moves away from the target
@@ -65,6 +60,8 @@ public class Constants {
 	public static final double AutoDefaultLiftHeight      = 30.0;//Height to move lift to after picking up/depositing something
 	public static final double AutoBackoffDistance        = 12.0;//Distance to back up after picking up/depositing something
 	public static final double AutoHabCreepSpeed          = 0.3;//Speed at which the drive train runs when climbing the hab
+	public static final double AutoRotatekP				  = 0.25;
+	public static final double AutoRotateError			  = 2;
 
 	//Cargo constants
 	public static final double CargoDepositLowHeight       = 25.0;
@@ -104,32 +101,6 @@ public class Constants {
 	public static final int   MainController               = 0;
 	public static final int   ButtonController             = 1;
 
-	//Button allocations
-//	public static final int   TestButton                   = 1;
-	public static final int   HatchLiftButton              = 1;
-	public static final int   LiftMoveUpButton             = 2;
-	public static final int   CargoIntakeOutButton         = 3;
-	public static final int   HatchDropButton              = 4;
-	public static final int   SetDriveHeightButton         = 5;
-	public static final int   CargoIntakeInButton          = 6;
-	public static final int   CargoDepositLowButton        = 7;
-	public static final int   CargoDepositMidButton        = 8;
-	public static final int   CargoDepositHighButton       = 9;
-	public static final int   CargoDepositRoverButton      = 10;
-	public static final int   HatchDepositLowButton        = 11;
-//	public static final int   HatchDepositRoverButton      = 11;
-	public static final int   HatchDepositMidButton        = 12;
-	public static final int   HatchDepositHighButton       = 13;
-	public static final int   CargoRetrieveGroundButton    = 14;
-	public static final int   HatchRetrieveDepotButton     = 15;
-	public static final int   CargoRetrieveDepotButton     = 16;
-	
-	//Controller button allocations
-	public static final int   LiftExtendButton             = 1;
-	public static final int   LiftRetractButton            = 2;
-	public static final int   LiftUpButton                 = 3;
-	public static final int   LiftDownButton               = 4;
-
 	//XBox raw button mappings
 	public static final int   XBoxButtonX                 = 3;
 	public static final int   XBoxButtonY                 = 4;
@@ -139,28 +110,8 @@ public class Constants {
 	public static final int   XBoxButtonStickRight        = 10;
 	public static final int   XBoxButtonTriggerLeft       = 5;
 	public static final int   XBoxButtonTriggerRight      = 6;
-	public static final int   XBoxButtonHome              = 7;
-	public static final int   XBoxButtonMenu              = 8; 
-	
-	public static final int   HabClimbButton              = XBoxButtonMenu;    //climber articulation = LogitechButtonStart
-	public static final int   HabRetractButton            = XBoxButtonHome;    //climber articulation = LogitechButtonStart
-
-	//Lift PID parameters
-	public static final int     LiftkPIDkSlotIdx     = 0;
-	public static final int     LiftkkPIDLoopIdx     = 0;
-	public static final int     LiftkTimeoutMs       = 30;
-	public static final boolean LiftkSensorPhase     = true;
-	public static final boolean LiftkMotorInvert     = true;
-	//kp, ki, kd, kf, izone, peak output
-	//ToDo : Need to set these parameters
-	public static final double  LiftPIDkP             = 0.1;
-	public static final double  LiftPIDkI             = 0.0;
-	public static final double  LiftPIDkD             = 0.0;
-	public static final double  LiftPIDkF             = 0.0;
-	public static final double  LiftPIDizone          = 0.0;
-	public static final double  LiftPIDpeakoutputUp   = 1.0;
-	public static final double  LiftPIDpeakoutputDown = 0.4;
-	public static final int     LiftPIDmaxerror       = 125;       //500 ticks is 1 inch
+	public static final int   XBoxButtonHome              = 7; //Labeled "BACK"
+	public static final int   XBoxButtonMenu              = 8; //Labeled "START"
 
 	//Drivetrain PID parameters
 	//Joystick parameters

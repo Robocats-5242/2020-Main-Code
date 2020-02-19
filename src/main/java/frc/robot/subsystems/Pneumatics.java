@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Pneumatics extends Subsystem {
   private static DoubleSolenoid solenoidIntake;
-  private static DoubleSolenoid solenoidClimb;
-  private static Solenoid solenoidShift;
+  private static DoubleSolenoid solenoidShift;
+  private static Solenoid solenoidClimb;
   private static Compressor compressor;
   private String CommandName = "Pneumatics";
   private static boolean pneumaticStateIntake = false;
@@ -28,17 +28,17 @@ public class Pneumatics extends Subsystem {
   private static boolean pneumaticStateShifter = false;
 
   //Intake  - 1 double solenoid
-  //Climber - 1 double solenoid
-  //EVO Shifters - 1 standard solenoid
+  //Climber - 1 standard solenoid
+  //EVO Shifters - 1 double solenoid
 
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
   private void initPneumatics(){
 //    pneumaticsSystem = new Pneumatics();//Creating here is circular !!!
-    solenoidIntake = new DoubleSolenoid(Constants.PneuStroke1Channel, Constants.PneuStroke2Channel);
-    solenoidClimb = new DoubleSolenoid(Constants.PneuStroke3Channel, Constants.PneuStroke4Channel);
-    solenoidShift = new Solenoid(Constants.PneuStroke5Channel);
+    solenoidIntake = new DoubleSolenoid(0, 1);
+    solenoidShift = new DoubleSolenoid(2, 3);
+    solenoidClimb = new Solenoid(4);
     compressor = new Compressor();
 
     compressor.setClosedLoopControl(true);
@@ -73,12 +73,12 @@ public class Pneumatics extends Subsystem {
     if(state == Constants.PneuClimbIn){
       pneumaticStateClimb = false;
       if (Robot.isReal() && Robot.useHardware())
-        solenoidClimb.set(DoubleSolenoid.Value.kReverse);
+        solenoidClimb.set(false);
     }
     else{
       pneumaticStateClimb = true;
       if (Robot.isReal() && Robot.useHardware())
-        solenoidClimb.set(DoubleSolenoid.Value.kForward);
+        solenoidClimb.set(true);
     }
   }
 
@@ -91,17 +91,23 @@ public class Pneumatics extends Subsystem {
     if(state == Constants.PneuShiftLow){
       pneumaticStateShifter = false;
       if (Robot.isReal() && Robot.useHardware())
-        solenoidShift.set(false);
+        solenoidShift.set(DoubleSolenoid.Value.kReverse);
     }
     else{
       pneumaticStateShifter = true;
       if (Robot.isReal() && Robot.useHardware())
-        solenoidShift.set(true);
+        solenoidShift.set(DoubleSolenoid.Value.kForward);
     }
   }
 
   public boolean getPneumaticsStateShifter(){
     return pneumaticStateShifter;
+  }
+ 
+  public void updatePneumatic(){
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonStickLeft)) setIntakePiston(!getPneumaticsStateIntake());
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonStickRight)) setShifterPiston(!getPneumaticsStateShifter());
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonHome)) setClimbPiston(!getPneumaticsStateClimb());
   }
 
   @Override
