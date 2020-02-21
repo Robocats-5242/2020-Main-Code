@@ -23,7 +23,7 @@ public class OI {
   public XboxController driveJoystick = new XboxController(Constants.MainController);
 
   //ToDo : Need to check button assignments
-  Button ButtonLiftOut =               new JoystickButton(driveJoystick, Constants.LiftExtendButton);//ToDo : Check which is in and which is out
+  /*Button ButtonLiftOut =               new JoystickButton(driveJoystick, Constants.LiftExtendButton);//ToDo : Check which is in and which is out
   Button ButtonLiftIn =                new JoystickButton(driveJoystick, Constants.LiftRetractButton);//ToDo : pneumatics need constants defined correctly
   Button ButtonLiftUp =                new JoystickButton(driveJoystick,Constants.LiftUpButton);
   Button ButtonLiftDown =              new JoystickButton(driveJoystick,Constants.LiftDownButton);
@@ -43,7 +43,7 @@ public class OI {
   Button ButtonHatchInLow =            new JoystickButton(buttonBoard,Constants.HatchRetrieveDepotButton);
   Button ButtonHatchLift =             new JoystickButton(buttonBoard,Constants.HatchLiftButton);
   Button ButtonHatchDrop =             new JoystickButton(buttonBoard,Constants.HatchDropButton);
-  Button ButtonHabClimb =              new JoystickButton(driveJoystick, Constants.HabClimbButton);
+  Button ButtonHabClimb =              new JoystickButton(driveJoystick, Constants.HabClimbButton);*/
 
 
   //// CREATING BUTTONS
@@ -76,10 +76,10 @@ public class OI {
   public OI(){
 
     //driveJoystick.getPOV();
-    if (Robot.useJoysticks() == true){
+ /*   if (Robot.useJoysticks() == true){
       ButtonLiftIn.whenPressed(       new TogglePneumatics(false));
       ButtonLiftOut.whenPressed(      new TogglePneumatics(true));
-    }
+    }*/
   }
 
   public double getControllerStickLeft(){

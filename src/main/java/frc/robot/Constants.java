@@ -159,7 +159,7 @@ public class Constants {
 	public static final int rumbleCountWait = 5;
 
 	//Shooter parameters
-	public static final double maxShooterSpeed = 0.8;
+	public static final double maxShooterSpeed = 0.9;
 	public static final int maxShooterRPM = 5700;
 	public static final int shooterAccel = 10000;
 	public static final double shooterkP = 7e-5;

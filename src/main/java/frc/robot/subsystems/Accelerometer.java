@@ -67,6 +67,10 @@ public class Accelerometer extends Subsystem {
     imu.setYaw(0);
   }
 
+  public double getHeading(){
+    return Math.IEEEremainder(getAngleZ(), 360);
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

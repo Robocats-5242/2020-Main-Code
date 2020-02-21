@@ -7,7 +7,11 @@
 
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.kinematics.*;
+import edu.wpi.first.wpilibj.geometry.*;
 
 //import javax.swing.text.StyleContext.SmallAttributeSet;
 //import java.net.Socket;
@@ -23,6 +27,8 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
+
 import frc.robot.Robot;
 
 public class DriveTrain extends Subsystem {
@@ -57,6 +63,9 @@ public class DriveTrain extends Subsystem {
   private double leftOldVelocity = 0;
   private double rightOldVelocity = 0;
   private int decelLoopCount = 0;
+
+  private final DifferentialDriveOdometry odometry;
+  private final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.5842);
 
   private void driveTrainInit(){
     rightFront    = new CANSparkMax(Constants.CANRightFrontMasterController, MotorType.kBrushless);
@@ -183,6 +192,8 @@ public class DriveTrain extends Subsystem {
     if (Robot.isReal() && Robot.useHardware()){
       driveTrainInit();
     }
+    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(Robot.imu.getHeading()));
+
     resetEncoders();
   }
 
@@ -375,4 +386,19 @@ public class DriveTrain extends Subsystem {
     }
     return errors;
   }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+    return new DifferentialDriveWheelSpeeds(leftAutoEncoder.getRate(), rightAutoEncoder.getRate());
+  }
+
+  public void updateOdo(){
+    odometry.update(Rotation2d.fromDegrees(Robot.imu.getHeading()), getLeftEncoderInches(), getRightEncoderInches());
+  }
+
+  public Pose2d getPose(){
+    return 
+    odometry.getPoseMeters();
+  }
+
+  //TrajectoryConfig config = new TrajectoryConfig(maxVelocityMetersPerSecond, maxAccelerationMetersPerSecondSq)
 }

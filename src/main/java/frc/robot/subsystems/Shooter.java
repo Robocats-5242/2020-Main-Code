@@ -31,6 +31,7 @@ public class Shooter extends Subsystem {
         encoder = shooter1.getEncoder();
         setPoint = 0;
 
+        shooter1.setInverted(true);
         pidController.setP(Constants.shooterkP);
         pidController.setI(Constants.shooterkI);
         pidController.setD(Constants.shooterkD);
@@ -70,7 +71,7 @@ public class Shooter extends Subsystem {
         kMinOutput = min; kMaxOutput = max; 
         }
         pidController.setSmartMotionMaxAccel(accel, 0);*/
-        if(!Robot.driveTrain.getAutoFlag()){
+        if(!autoShoot){
             if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonY)){
                 setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
             }else if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonX)){
