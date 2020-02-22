@@ -64,8 +64,8 @@ public class DriveTrain extends Subsystem {
   private double rightOldVelocity = 0;
   private int decelLoopCount = 0;
 
-  private final DifferentialDriveOdometry odometry;
-  private final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.5842);
+  public final DifferentialDriveOdometry odometry;
+  public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.5842);
 
   private void driveTrainInit(){
     rightFront    = new CANSparkMax(Constants.CANRightFrontMasterController, MotorType.kBrushless);
@@ -388,11 +388,11 @@ public class DriveTrain extends Subsystem {
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-    return new DifferentialDriveWheelSpeeds(leftAutoEncoder.getRate(), rightAutoEncoder.getRate());
+    return new DifferentialDriveWheelSpeeds(leftAutoEncoder.getRate()*0.0254, rightAutoEncoder.getRate()*0.0254);
   }
 
   public void updateOdo(){
-    odometry.update(Rotation2d.fromDegrees(Robot.imu.getHeading()), getLeftEncoderInches(), getRightEncoderInches());
+    odometry.update(Rotation2d.fromDegrees(Robot.imu.getHeading()), getLeftEncoderInches()*0.0254, getRightEncoderInches()*0.0254);
   }
 
   public Pose2d getPose(){
@@ -400,5 +400,4 @@ public class DriveTrain extends Subsystem {
     odometry.getPoseMeters();
   }
 
-  //TrajectoryConfig config = new TrajectoryConfig(maxVelocityMetersPerSecond, maxAccelerationMetersPerSecondSq)
 }
