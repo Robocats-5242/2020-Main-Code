@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static Intake intakeSystem;
   //public static Lift liftSystem;
-  //public static Pneumatics pneumaticSystem;
+  public static Pneumatics pneumaticSystem;
   public static Accelerometer imu;
   public static DrivesWithJoysticks driveIntake;
   //public static Climber habClimber;
@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveTrain = new DriveTrain();
     //liftSystem = new Lift();
-    //pneumaticSystem = new Pneumatics();
+    pneumaticSystem = new Pneumatics();
     intakeSystem = new Intake();
     driveWithJoystick = new DrivesWithJoysticks();
     //OI must come after subsystems since it references commands which in turn reference sub-systems
@@ -198,8 +198,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    intakeSystem.updateIntake();
-    shooter.shoot(false);
+    //intakeSystem.updateIntake();
+    //shooter.shoot(false);
+    pneumaticSystem.updatePneumatic();
   }
 
   public static void logMessage(String module, String message){
@@ -222,6 +223,7 @@ public class Robot extends TimedRobot {
     visionSystem.rumbler();
     shooter.shoot(false);
     intakeSystem.updateIntake();
+    pneumaticSystem.updatePneumatic();
   }
 
  }

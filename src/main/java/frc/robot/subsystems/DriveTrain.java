@@ -64,7 +64,7 @@ public class DriveTrain extends Subsystem {
   private double rightOldVelocity = 0;
   private int decelLoopCount = 0;
 
-  public final DifferentialDriveOdometry odometry;
+  //public final DifferentialDriveOdometry odometry;
   public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.5842);
 
   private void driveTrainInit(){
@@ -192,7 +192,7 @@ public class DriveTrain extends Subsystem {
     if (Robot.isReal() && Robot.useHardware()){
       driveTrainInit();
     }
-    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(Robot.imu.getHeading()));
+    //odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(/*Robot.imu.getHeading()*/0));
 
     resetEncoders();
   }
@@ -271,6 +271,10 @@ public class DriveTrain extends Subsystem {
 
   public double getRightSpeedPercent(){
     return rightCurrentPercent;
+  }
+
+  public double metersPerSecToRPM(double leftMPS, double rightMPS){
+    return 0;
   }
 /*
   public void driveDistanceStraight(double distance) {
@@ -391,13 +395,13 @@ public class DriveTrain extends Subsystem {
     return new DifferentialDriveWheelSpeeds(leftAutoEncoder.getRate()*0.0254, rightAutoEncoder.getRate()*0.0254);
   }
 
-  public void updateOdo(){
+  /*public void updateOdo(){
     odometry.update(Rotation2d.fromDegrees(Robot.imu.getHeading()), getLeftEncoderInches()*0.0254, getRightEncoderInches()*0.0254);
   }
 
   public Pose2d getPose(){
     return 
     odometry.getPoseMeters();
-  }
+  }*/
 
 }

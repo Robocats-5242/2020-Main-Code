@@ -1,4 +1,4 @@
-package frc.robot.commands;
+/*package frc.robot.commands;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -25,14 +25,7 @@ public class AutoCenterishTraject{
             DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
         }
         RamseteCommand ramseteCommand = new RamseteCommand(
-        trajectory,
-        Robot.driveTrain::getPose,
-        new RamseteController(),
-        Robot.driveTrain.kinematics,
-        Robot.driveTrain::getWheelSpeeds,
-        // RamseteCommand passes volts to the callback
-        m_robotDrive::tankDriveVolts,
-        Robot.driveTrain
-    );
+        trajectory, Robot.driveTrain::getPose, new RamseteController(), Robot.driveTrain.kinematics,
+        Robot.driveTrain::getWheelSpeeds, Robot.driveTrain::metersPerSecToRPM, Robot.driveTrain);
     }
-}
+}*/
