@@ -200,7 +200,7 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     //intakeSystem.updateIntake();
     //shooter.shoot(false);
-    pneumaticSystem.updatePneumatic();
+    pneumaticSystem.updatePneumatic(); 
   }
 
   public static void logMessage(String module, String message){

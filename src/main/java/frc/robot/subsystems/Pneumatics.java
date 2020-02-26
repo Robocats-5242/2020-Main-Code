@@ -105,9 +105,12 @@ public class Pneumatics extends Subsystem {
   }
  
   public void updatePneumatic(){
-    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonStickLeft)) setIntakePiston(!getPneumaticsStateIntake());
-    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonStickRight)) setShifterPiston(!getPneumaticsStateShifter());
-    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonHome)) setClimbPiston(!getPneumaticsStateClimb());
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonStickLeft)) setIntakePiston(false);
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonStickRight)) setIntakePiston(true);
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonTriggerLeft)) setShifterPiston(false);
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonTriggerRight)) setShifterPiston(true);
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonHome)) setClimbPiston(true);
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonMenu)) setClimbPiston(false);
   }
 
   @Override
