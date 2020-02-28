@@ -17,17 +17,23 @@ public class Hopper extends Subsystem {
     public Hopper(){
         hopper1 = new VictorSP(Constants.PWMHopper1);
         hopper2 = new VictorSP(Constants.PWMHopper2);
+
+        hopper1.setInverted(false);
+        hopper2.setInverted(false);
     }
 
     public void updateHopper(){
         if(Robot.operatorInterface.getControllerButtonStateOp(Constants.XBoxButtonA)){
-            hopper1.set(Constants.hopperSpeed);
-            hopper2.set(Constants.hopperSpeed);
+            setHopper(Constants.hopperSpeed);
         }
         if(Robot.operatorInterface.getControllerButtonStateOp(Constants.XBoxButtonB)){
-            hopper1.set(0);
-            hopper2.set(0);
+            setHopper(0);
         }
+    }
+
+    public void setHopper(double power){
+        hopper1.set(power);
+        hopper2.set(power);
     }
 
     public void initDefaultCommand(){

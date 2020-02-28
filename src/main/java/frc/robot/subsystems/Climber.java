@@ -24,6 +24,7 @@ public class Climber extends Subsystem {
 
   private void climberInit(){
     crawler = new VictorSP(Constants.PWMCrawler);
+    setCrawlerPower(0);
   }
 
   public Climber(){
@@ -42,6 +43,11 @@ public class Climber extends Subsystem {
 
   public double getCrawlerPower(){
     return crawlerPower;
+  }
+
+  public void updateCrawler(){
+    if(Robot.operatorInterface.getPOVOp() == 0) setCrawlerPower(Constants.CrawlSpeed);
+    if(Robot.operatorInterface.getPOVOp() == 180) setCrawlerPower(0);
   }
 
   @Override

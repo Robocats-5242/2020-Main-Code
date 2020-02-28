@@ -13,20 +13,20 @@ public class GyroRotate extends Command{
 
     public GyroRotate(double angleYaw){
         requires(Robot.driveTrain);
-        requires(Robot.imu);
+        //requires(Robot.imu);
         angle = angleYaw;
     }
 
     @Override
     protected void initialize() {
-        currAngle = Robot.imu.getAngleZ();
+        //currAngle = Robot.imu.getAngleZ();
         Robot.driveTrain.setAutoFlag(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        currAngle = Robot.imu.getAngleZ();
+        //currAngle = Robot.imu.getAngleZ();
         angleDiff = angle - currAngle;
         //Code similar to AlignWithTarget. Don't forget to add a P factor to control the speed of turn //CCW is positive
         Robot.driveTrain.setSpeedPercentAuto(-(angleDiff / angle) * Constants.AutoRotatekP, (angleDiff / angle) * Constants.AutoRotatekP);

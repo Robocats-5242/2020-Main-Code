@@ -41,10 +41,11 @@ public class Robot extends TimedRobot {
   public static Intake intakeSystem;
   //public static Lift liftSystem;
   public static Pneumatics pneumaticSystem;
-  public static Accelerometer imu;
+  //public static Accelerometer imu;
   public static DrivesWithJoysticks driveIntake;
-  //public static Climber habClimber;
+  public static Climber climber;
   public static Shooter shooter;
+  public static Hopper hopper;
 
   Faults _faults_L = new Faults();
   Faults _faults_R = new Faults();
@@ -87,9 +88,11 @@ public class Robot extends TimedRobot {
     driveWithJoystick = new DrivesWithJoysticks();
     //OI must come after subsystems since it references commands which in turn reference sub-systems
     visionSystem = new Vision();
-    imu = new Accelerometer();
+    //imu = new Accelerometer();
     operatorInterface = new OI();
     shooter = new Shooter();
+    climber = new Climber();
+    hopper = new Hopper();
 
     //Make a note of the current angle of the accelerometer
     //imu.captureOffset();
@@ -162,7 +165,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
-    imu.resetPigeonYaw();
+    //imu.resetPigeonYaw();
     shooter.autoShoot(2000); 
   }
 
@@ -219,9 +222,11 @@ public class Robot extends TimedRobot {
     driveTrain.updateDriveTrain();
     visionSystem.updateVision();
     visionSystem.rumbler();
-    shooter.shoot(false);
+    shooter.shoot();
     intakeSystem.updateIntake();
     pneumaticSystem.updatePneumatic();
+    climber.updateCrawler();
+    hopper.updateHopper();
   }
 
  }

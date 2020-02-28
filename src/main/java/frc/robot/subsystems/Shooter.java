@@ -51,7 +51,7 @@ public class Shooter extends Subsystem {
         SmartDashboard.putNumber("Shooter Acceleration", accel);*/
     }
 
-    public void shoot(boolean autoShoot){
+    public void shoot(){
         /*double p = SmartDashboard.getNumber("P Gain", 0);
         double i = SmartDashboard.getNumber("I Gain", 0);
         double d = SmartDashboard.getNumber("D Gain", 0);
@@ -89,15 +89,15 @@ public class Shooter extends Subsystem {
     public void autoShoot(int msWait){
         int timeoutLoop = msWait / 20;
         setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
-        boolean doneShooting = false;
         pidController.setReference(setPoint, ControlType.kSmartVelocity);
-        while(!doneShooting){
+        Robot.hopper.setHopper(Constants.hopperSpeed);
+        while(timeoutLoop > 0){
             SmartDashboard.putNumber("SetPoint", setPoint);
             SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());
-            if(timeoutLoop <= 0) doneShooting = true;
             timeoutLoop --;
         }
         setPoint = 0;
         pidController.setReference(setPoint, ControlType.kSmartVelocity);
+        Robot.hopper.setHopper(0);
     }
 }

@@ -25,7 +25,7 @@ public class Intake extends Subsystem {
   public Intake(){
     Robot.logMessage(CommandName, "constructor");
     if (Robot.isReal() && Robot.useHardware()){
-      intake = new VictorSP(1);
+      intake = new VictorSP(Constants.PWMIntake);
       intake.setInverted(true);
     }
   }

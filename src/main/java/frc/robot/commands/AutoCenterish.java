@@ -7,7 +7,7 @@ public class AutoCenterish extends CommandGroup{
 
     public AutoCenterish (){
         //addSequential(new DriveToPosition(-14, Constants.AutoInSpeed, 0));
-        addSequential(new AlignWithTarget());
+        /*addSequential(new AlignWithTarget());
         addSequential(new AutoShoot(2000));
         addSequential(new GyroRotate(0));
         addSequential(new DriveToPosition(-66.5, Constants.AutoInSpeed, 0));
@@ -20,6 +20,6 @@ public class AutoCenterish extends CommandGroup{
         addSequential(new GyroRotate(0));//Rotate to 0
         addSequential(new DriveToPosition(196.5, Constants.AutoInSpeed, 0));
         addSequential(new AlignWithTarget());
-        addSequential(new AutoShoot(2000));
+        addSequential(new AutoShoot(2000));*/
     }
 }
