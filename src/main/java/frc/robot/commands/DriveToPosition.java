@@ -82,7 +82,8 @@ public class DriveToPosition extends Command {
   protected void end() {
     Robot.logMessage(CommandName, "end");
     SmartDashboard.putString("Drive to Pos Running?", "No more");
-    //Robot.driveTrain.setSpeedPercent(0, 0);
+    Robot.driveTrain.setSpeedPercentAuto(0, 0);
+    Robot.driveTrain.updateDriveTrain();
     Robot.driveTrain.setAutoFlag(false);//Return control back to the joystick
   }
 
@@ -91,7 +92,8 @@ public class DriveToPosition extends Command {
   @Override
   protected void interrupted() {
     Robot.logMessage(CommandName, "interrupted");
-    //Robot.driveTrain.setSpeedPercent(0, 0);
+    Robot.driveTrain.setSpeedPercentAuto(0, 0);
+    Robot.driveTrain.updateDriveTrain();
     Robot.driveTrain.setAutoFlag(false);//Return control back to the joystick
   }
 
@@ -109,18 +111,19 @@ public class DriveToPosition extends Command {
       double rightDistanceTraveled;
       //double leftRightDistanceDelta;
       //double leftRightSpeedCorrection;
-
-      leftDistanceTraveled  = Robot.driveTrain.getLeftEncoderInches();
-      rightDistanceTraveled = Robot.driveTrain.getRightEncoderInches(); 
-      distanceTraveled = (leftDistanceTraveled + rightDistanceTraveled) / 2;//Average the left and right encoders
-      if (Math.abs(distanceTraveled) >= Math.abs(localDistanceInches)){//Check if gone the entire distance (note, direction is important)
-        driveStopped = true;
+      while(!driveStopped){
+        leftDistanceTraveled  = Robot.driveTrain.getLeftEncoderInches();
+        rightDistanceTraveled = Robot.driveTrain.getRightEncoderInches(); 
+        distanceTraveled = (leftDistanceTraveled + rightDistanceTraveled) / 2;//Average the left and right encoders
+        if (Math.abs(distanceTraveled) >= Math.abs(localDistanceInches)){//Check if gone the entire distance (note, direction is important)
+          driveStopped = true;
+        }
+        else{//Otherwise make sure driving straight
+          //leftRightDistanceDelta = leftDistanceTraveled - rightDistanceTraveled;
+          //leftRightSpeedCorrection = leftRightDistanceDelta * Constants.DriveStraightPGain;
+          Robot.driveTrain.setSpeedPercentAuto(direction * (localSpeed), direction * (localSpeed));
+        }
+        Robot.driveTrain.updateDriveTrain();
       }
-      else{//Otherwise make sure driving straight
-        //leftRightDistanceDelta = leftDistanceTraveled - rightDistanceTraveled;
-        //leftRightSpeedCorrection = leftRightDistanceDelta * Constants.DriveStraightPGain;
-        Robot.driveTrain.setSpeedPercentAuto(direction * (localSpeed), direction * (localSpeed));
-      }
-      Robot.driveTrain.updateDriveTrain();
     }
 } 

@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
  */
 public class OI {
 
-  public Joystick buttonBoard =   new Joystick(Constants.ButtonController);
 //  private Joystick secondaryJoystick = new Joystick(1);
   public XboxController driveJoystick = new XboxController(Constants.MainController);
+  public XboxController opJoystick = new XboxController(1);
 
   //ToDo : Need to check button assignments
   /*Button ButtonLiftOut =               new JoystickButton(driveJoystick, Constants.LiftExtendButton);//ToDo : Check which is in and which is out
@@ -103,9 +103,23 @@ public class OI {
       return false;
   }
 
+  public boolean getControllerButtonStateOp(int buttonID){
+    if (Robot.useJoysticks() == true)
+      return opJoystick.getRawButton(buttonID);
+    else
+      return false;
+  }
+
   public double getControllerTriggerLeft(){
     if (Robot.useJoysticks() == true)
       return driveJoystick.getTriggerAxis(Hand.kLeft);
+    else
+      return 0;
+  }
+
+  public double getControllerTriggerLeftOp(){
+    if (Robot.useJoysticks() == true)
+      return opJoystick.getTriggerAxis(Hand.kLeft);
     else
       return 0;
   }
@@ -117,9 +131,23 @@ public class OI {
       return 0;
   }
 
+  public double getControllerTriggerRightOp(){
+    if (Robot.useJoysticks() == true)
+      return opJoystick.getTriggerAxis(Hand.kRight);
+    else
+      return 0;
+  }
+
   public int getPOV(){
     if (Robot.useJoysticks() == true)
       return driveJoystick.getPOV();
+    else
+      return -1;
+  }
+
+  public int getPOVOp(){
+    if (Robot.useJoysticks() == true)
+      return opJoystick.getPOV();
     else
       return -1;
   }

@@ -94,8 +94,8 @@ public class DriveTrain extends Subsystem {
     rightFollower.clearFaults();
     leftFollower.clearFaults();
 
-    rightAutoEncoder.setDistancePerPulse(Constants.WheelTicksPerInch);
-    leftAutoEncoder.setDistancePerPulse(Constants.WheelTicksPerInch);
+    rightAutoEncoder.setDistancePerPulse(Constants.WheelInchPerTicks);
+    leftAutoEncoder.setDistancePerPulse(Constants.WheelInchPerTicks);
     rightAutoEncoder.setReverseDirection(false);
     leftAutoEncoder.setReverseDirection(true);
      //Configure drive train

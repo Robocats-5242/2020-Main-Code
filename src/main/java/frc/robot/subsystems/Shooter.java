@@ -71,18 +71,11 @@ public class Shooter extends Subsystem {
         kMinOutput = min; kMaxOutput = max; 
         }
         pidController.setSmartMotionMaxAccel(accel, 0);*/
-        if(!autoShoot){
             if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonY)){
                 setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
             }else if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonX)){
                 setPoint = 0;
             }
-        }else{
-            if(autoShoot)
-                setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
-            else
-                setPoint = 0;
-        }
 
         pidController.setReference(setPoint, ControlType.kSmartVelocity);
         
@@ -91,5 +84,20 @@ public class Shooter extends Subsystem {
     }
     public void initDefaultCommand(){
 
+    }
+
+    public void autoShoot(int msWait){
+        int timeoutLoop = msWait / 20;
+        setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
+        boolean doneShooting = false;
+        pidController.setReference(setPoint, ControlType.kSmartVelocity);
+        while(!doneShooting){
+            SmartDashboard.putNumber("SetPoint", setPoint);
+            SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());
+            if(timeoutLoop <= 0) doneShooting = true;
+            timeoutLoop --;
+        }
+        setPoint = 0;
+        pidController.setReference(setPoint, ControlType.kSmartVelocity);
     }
 }

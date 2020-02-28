@@ -17,6 +17,13 @@ public class Constants {
 	public static final int	   CANShooter 					   = 6;
 	public static final int	   CANPigeon					   = 24;
 
+	//PWM Constants
+	public static final int 	PWMLimeServo				   = 0;
+	public static final int		PWMIntake					   = 1;
+	public static final int		PWMHopper1					   = 2;
+	public static final int		PWMHopper2					   = 3;
+	public static final int		PWMCrawler					   = 4;
+
 	//Pneumatic constants
 	public static final int     PneuStroke1Channel             = 0;
 	public static final int     PneuStroke2Channel             = 1;
@@ -41,7 +48,7 @@ public class Constants {
 	public static final int    WheelCountsPerRev               = 360;
 	public static final double WheelDiameter                   = 6;//6 inch diameter
 	public static final double WheelCircumference              = Math.PI*WheelDiameter;
-	public static final double WheelTicksPerInch               = WheelCountsPerRev / WheelCircumference;
+	public static final double WheelInchPerTicks               = WheelCircumference / WheelCountsPerRev;
 	public static final int    SpeedMaxTicksPer100mS           = 8000;//ToDo : Need to measure
 	public static final double DriveStraightPGain              = 0.1;//ToDo : Need to tune
 	public static final double MaxAllowableTargetError         = 0.03;
@@ -169,6 +176,9 @@ public class Constants {
 	public static final double shooterkFF = 0;
 	public static final double shooterkMaxOutput = 1;
 	public static final double shooterkMinOutput = -1;
+
+	//Hopper Constants
+	public static final double hopperSpeed = 0.25;
 
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from

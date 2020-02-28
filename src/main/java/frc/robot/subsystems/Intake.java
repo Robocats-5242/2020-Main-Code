@@ -51,8 +51,8 @@ public class Intake extends Subsystem {
   }
 
   public void detectIntakeSpeed(){
-    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonA)) setIntakeSpeed(Constants.IntakeHoldSpeed);
-    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonB)) setIntakeSpeed(0);
+    if(Robot.pneumaticSystem.getPneumaticsStateIntake()) setIntakeSpeed(Constants.IntakeHoldSpeed);
+    if(!Robot.pneumaticSystem.getPneumaticsStateIntake()) setIntakeSpeed(0);
   }
 
 

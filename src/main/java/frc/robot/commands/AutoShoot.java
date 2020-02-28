@@ -35,10 +35,13 @@ public class AutoShoot extends Command{
     }
     protected void end(){
         Robot.driveTrain.setAutoFlag(true);
-        Robot.shooter.shoot(false);
     }
 
     protected void interrupted(){
 
+    }
+
+    public void prepShoot(){
+        Robot.shooter.shoot(true);
     }
 }

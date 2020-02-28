@@ -163,8 +163,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
     imu.resetPigeonYaw();
-    driveToPosition = new DriveToPosition(20, 0.5, 20);
-    driveToPosition.start();
+    shooter.autoShoot(2000); 
   }
 
   /**
@@ -200,7 +199,6 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     //intakeSystem.updateIntake();
     //shooter.shoot(false);
-    pneumaticSystem.updatePneumatic(); 
   }
 
   public static void logMessage(String module, String message){
