@@ -65,14 +65,29 @@ public class AlignWithTarget extends Command {
     Robot.driveTrain.setAutoFlag(false);
   }
 
-  public static void alignWithTarget(){
+  public static boolean alignWithTarget(){
     if(Robot.visionSystem.x > Constants.VisionErrorAllowed){ 
       Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier);
     }else if(Robot.visionSystem.x < -Constants.VisionErrorAllowed){
       Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier);
     }else {
       Robot.driveTrain.setSpeedPercentAuto(0, 0);
+      return true;
     }
     Robot.driveTrain.updateDriveTrain();
+    return false;
+  }
+
+  public static void alignWithTargetTeleOp(){
+    Robot.driveTrain.setAutoFlag(true);
+    boolean isDone = false;
+    while(!isDone){
+      isDone = alignWithTarget();
+    }
+    Robot.driveTrain.setAutoFlag(false);
+  }
+
+  public static void updateAutoFocus(){
+    if(Robot.operatorInterface.getControllerButtonState(Constants.XBoxButtonY)) alignWithTargetTeleOp();
   }
 }

@@ -4,9 +4,9 @@ import frc.robot.*;
 
 public class AutoGen{
 
-    public void start(){
+    public static void start(){
         AlignWithTarget.alignWithTarget();
         Robot.shooter.autoShoot(3000);
-        DriveToPosition.driveToPosition(20, Constants.AutoInSpeed, 0);
+        DriveToPosition.driveToPosition(-40, Constants.AutoInSpeed, 0);
     }
 }

@@ -46,7 +46,7 @@ public class Climber extends Subsystem {
   }
 
   public void updateCrawler(){
-    if(Robot.operatorInterface.getPOVOp() == 0) setCrawlerPower(Constants.CrawlSpeed);
+    if(Robot.operatorInterface.getPOVOp() == 0) setCrawlerPower(Constants.HabCrawlSpeed);
     if(Robot.operatorInterface.getPOVOp() == 180) setCrawlerPower(0);
   }
 

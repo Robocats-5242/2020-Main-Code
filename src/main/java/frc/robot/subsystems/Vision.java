@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.cscore.MjpegServer;
+import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -33,6 +33,8 @@ public class Vision extends Subsystem {
   private static double yPositionTemp = 0;
   private static boolean isBusy = false;
   private static int timeoutCounter = 0;
+  private static CameraServer cam1;
+  private static CameraServer cam2;
 
   NetworkTableEntry tx;
   NetworkTableEntry ty;
@@ -60,6 +62,8 @@ public class Vision extends Subsystem {
       ty = table.getEntry("ty");
       ta = table.getEntry("ta");
       visionServo = new Servo(Constants.VisionServoPort);
+      cam1.getInstance().startAutomaticCapture(0);
+      cam2.getInstance().startAutomaticCapture(1);
     }else{
       txSim = 0;
       tySim = 0;
@@ -114,6 +118,7 @@ public class Vision extends Subsystem {
     if ((goRumble == 1) && (lastGoRumble == 0) && (RumbleState == 0))
     {
       Robot.operatorInterface.driveJoystick.setRumble(RumbleType.kLeftRumble, 1);
+      Robot.operatorInterface.opJoystick.setRumble(RumbleType.kLeftRumble, 1);
       rumbleCounter = Constants.rumbleCount;
       RumbleState = 1;
     }
@@ -130,6 +135,7 @@ public class Vision extends Subsystem {
       else
       {
         Robot.operatorInterface.driveJoystick.setRumble(RumbleType.kLeftRumble, 0);
+        Robot.operatorInterface.opJoystick.setRumble(RumbleType.kLeftRumble, 0);
         RumbleState = 2;//Wait some time with rumble off
         rumbleCounter = Constants.rumbleCountWait;
       }
@@ -142,6 +148,7 @@ public class Vision extends Subsystem {
       else
       {
         Robot.operatorInterface.driveJoystick.setRumble(RumbleType.kLeftRumble, 1);
+        Robot.operatorInterface.opJoystick.setRumble(RumbleType.kLeftRumble, 1);
         RumbleState = 3;//Rumbling on for second time
         rumbleCounter = Constants.rumbleCount;
       }
@@ -153,6 +160,7 @@ public class Vision extends Subsystem {
     {
       SmartDashboard.putString("Rumble Status", "RumbleRumble 2");
       Robot.operatorInterface.driveJoystick.setRumble(RumbleType.kLeftRumble, 0);
+      Robot.operatorInterface.opJoystick.setRumble(RumbleType.kLeftRumble, 0);
       RumbleState = 0;//Rumbling done, wait for new start
     }
 

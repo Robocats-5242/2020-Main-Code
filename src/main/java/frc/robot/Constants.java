@@ -59,7 +59,7 @@ public class Constants {
 	public static final int MaxDecel = 1500;
 
 	//Auto constants
-	public static final double AutoInSpeed                = 0.5;//Speed at which the semi-auto moves towards the target
+	public static final double AutoInSpeed                = 0.4;//Speed at which the semi-auto moves towards the target
 	public static final double AutoOutSpeed               = 0.6;//Speed at which the semi-auto moves away from the target
 	public static final double AutoStopFromDistanceCargo  = 6.0;//Distance from the target to stop for cargo (account for the hook)
 	public static final double AutoStopFromDistanceHatch  = 4.0;//Distance from the target to stop for hatches (needs to be inside target)
@@ -178,7 +178,10 @@ public class Constants {
 	public static final double shooterkMinOutput = -1;
 
 	//Hopper Constants
-	public static final double hopperSpeed = 0.25;
+	public static final double HopperGreenMod = 1.2;
+	public static final double HopperSpeed = 0.25;
+	public static final double HopperSpeedReverse = -0.5;
+	
 
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from

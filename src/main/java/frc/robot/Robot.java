@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.*;
+import frc.robot.commands.AutoGen;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -53,7 +54,7 @@ public class Robot extends TimedRobot {
   int loopCount = 0;
 
   private void updateSmartDashboard(){
-    //Historically we have found that if items are not added 
+    /*//Historically we have found that if items are not added 
     SmartDashboard.putNumber("Left power", driveTrain.getLeftSpeedPercent());
     SmartDashboard.putNumber("Right power", driveTrain.getRightSpeedPercent());
     //SmartDashboard.putNumber("LiftPosition", liftSystem.getLiftPositionInches());
@@ -61,7 +62,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right dist.", driveTrain.getRightEncoderInches());
     SmartDashboard.putNumber("Left ticks", driveTrain.getLeftEncoderTicks());
     SmartDashboard.putNumber("Right ticks", driveTrain.getRightEncoderTicks());
-    //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
+    //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());*/
 
 //    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
 //    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());
@@ -72,7 +73,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Accel-Z", imu.getAccelZ());
     //SmartDashboard.putNumber("Accel-Z Ave.", imu.getAccelZAverage());
 
-    SmartDashboard.putNumberArray("CAN Errors :{", driveTrain.getCANErrors());
+    //SmartDashboard.putNumberArray("CAN Errors :{", driveTrain.getCANErrors());
   }
 
   /**
@@ -166,7 +167,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
     //imu.resetPigeonYaw();
-    shooter.autoShoot(2000); 
+    AutoGen.start();
+    //DriveToPosition.driveToPosition(20, Constants.AutoInSpeed, 0);
   }
 
   /**
@@ -222,11 +224,12 @@ public class Robot extends TimedRobot {
     driveTrain.updateDriveTrain();
     visionSystem.updateVision();
     visionSystem.rumbler();
-    shooter.shoot();
-    intakeSystem.updateIntake();
-    pneumaticSystem.updatePneumatic();
-    climber.updateCrawler();
+    AlignWithTarget.alignWithTargetTeleOp();
     hopper.updateHopper();
+    shooter.shoot();
+    pneumaticSystem.updatePneumatic();
+    intakeSystem.updateIntake();
+    climber.updateCrawler();
   }
 
  }

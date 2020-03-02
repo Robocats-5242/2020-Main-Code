@@ -316,8 +316,13 @@ public class DriveTrain extends Subsystem {
     if (Robot.isReal() && Robot.useHardware()){
       //leftVelocity = deceleration(leftOldVelocity, leftVelocity);
       //rightVelocity = deceleration(rightOldVelocity, rightVelocity);
-      leftPidController.setReference(leftVelocity, control, 0);
-      rightPidController.setReference(rightVelocity, control, 0);
+      if(!Robot.pneumaticSystem.getPneumaticsStateShifter()){
+        leftPidController.setReference(leftVelocity, control, 0);
+        rightPidController.setReference(rightVelocity, control, 0);
+      }else{
+        leftPidController.setReference(leftVelocity * 0.75, control, 0);
+        rightPidController.setReference(rightVelocity * 0.75, control, 0);
+      }
       
       
       SmartDashboard.putNumber("leftSetpoint", leftVelocity);

@@ -125,5 +125,7 @@ public class DriveToPosition extends Command {
         }
         Robot.driveTrain.updateDriveTrain();
       }
+      Robot.driveTrain.setSpeedPercentAuto(0, 0);
+      Robot.driveTrain.updateDriveTrain();
     }
 } 

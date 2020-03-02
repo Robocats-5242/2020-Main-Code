@@ -36,8 +36,8 @@ public class Pneumatics extends Subsystem {
 
   private void initPneumatics(){
 //    pneumaticsSystem = new Pneumatics();//Creating here is circular !!!
-    solenoidIntake = new DoubleSolenoid(1, 0, 1);
-    solenoidShift = new DoubleSolenoid(1, 2, 3);
+    solenoidIntake = new DoubleSolenoid(1, 2, 3);
+    solenoidShift = new DoubleSolenoid(1, 0, 1);
     solenoidClimb = new Solenoid(1, 4);
     compressor = new Compressor(1);
 
