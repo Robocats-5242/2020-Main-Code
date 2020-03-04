@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
   public static Intake intakeSystem;
   //public static Lift liftSystem;
   public static Pneumatics pneumaticSystem;
-  //public static Accelerometer imu;
+  public static Accelerometer imu;
   public static DrivesWithJoysticks driveIntake;
   public static Climber climber;
   public static Shooter shooter;
@@ -63,6 +63,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Left ticks", driveTrain.getLeftEncoderTicks());
     SmartDashboard.putNumber("Right ticks", driveTrain.getRightEncoderTicks());
     //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());*/
+    SmartDashboard.putString("Hopper is...", "Off");
+    SmartDashboard.putNumber("Gyro Yaw...", 0);
+    SmartDashboard.putString("Auto is...", "Doing nothing");
 
 //    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
 //    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());
@@ -89,7 +92,7 @@ public class Robot extends TimedRobot {
     driveWithJoystick = new DrivesWithJoysticks();
     //OI must come after subsystems since it references commands which in turn reference sub-systems
     visionSystem = new Vision();
-    //imu = new Accelerometer();
+    imu = new Accelerometer();
     operatorInterface = new OI();
     shooter = new Shooter();
     climber = new Climber();
@@ -166,9 +169,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
-    //imu.resetPigeonYaw();
-    AutoGen.start();
-    //DriveToPosition.driveToPosition(20, Constants.AutoInSpeed, 0);
+    imu.resetPigeonYaw();
+    AutoCenterish.start();
+    //AutoGen.start();
+    //DriveToPosition.driveToPosition(-20, Constants.AutoInSpeed, 0);
   }
 
   /**
@@ -178,8 +182,6 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     driveTrain.setAutoFlag(true);
     Scheduler.getInstance().run();
-    //visionSystem.updateVision();
-    //AlignWithTarget.alignWithTarget();
   }
  
     @Override

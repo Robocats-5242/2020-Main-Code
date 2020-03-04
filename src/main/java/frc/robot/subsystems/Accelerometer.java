@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.ctre.phoenix.sensors.*;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 
@@ -44,6 +46,7 @@ public class Accelerometer extends Subsystem {
   public double getAngleZ(){
     double[] ypr = new double[3];
     imu.getYawPitchRoll(ypr);
+    SmartDashboard.putNumber("Gyro Yaw...", ypr[0]);
     return ypr[0]; //CCW is positive, CW is neg
   } 
 

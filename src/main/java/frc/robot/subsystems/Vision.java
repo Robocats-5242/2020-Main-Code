@@ -52,16 +52,16 @@ public class Vision extends Subsystem {
 
   Servo visionServo;
   boolean servoToggle = false;
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
   public Vision(){
     Robot.logMessage(CommandName, "constructor");
     if (Robot.isReal()){
-      NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-      table.getEntry("ledMode").setNumber(3);
+      table.getEntry("ledMode").setNumber(1);
       tx = table.getEntry("tx");
       ty = table.getEntry("ty");
       ta = table.getEntry("ta");
-      visionServo = new Servo(Constants.VisionServoPort);
+      //visionServo = new Servo(Constants.VisionServoPort);
       cam1.getInstance().startAutomaticCapture(0);
       cam2.getInstance().startAutomaticCapture(1);
     }else{
@@ -75,6 +75,7 @@ public class Vision extends Subsystem {
   }
 
   public void updateVision(){
+    table.getEntry("ledMode").setNumber(3);
     if(Robot.isReal()){//read values periodically
       x = tx.getDouble(0.0);
       y = ty.getDouble(0.0);

@@ -98,9 +98,11 @@ public class DriveToPosition extends Command {
   }
 
   public static void driveToPosition(double distanceInches, double speed, double stopDistance){
-    localDistanceInches = distanceInches;
-    localSpeed = speed;
-    localStopDistance = stopDistance;
+    Robot.driveTrain.resetEncoders();
+    driveStopped = false;
+    double localDistanceInches = distanceInches;
+    double localSpeed = speed;
+    double localStopDistance = stopDistance;
     if (localDistanceInches < 0)
       direction = -1;
     else
