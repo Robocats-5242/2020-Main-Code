@@ -50,20 +50,20 @@ public class Vision extends Subsystem {
   boolean rumbleOnce = false;
   int rumbleCounter = 0;
 
-  Servo visionServo;
+  //Servo visionServo;
   boolean servoToggle = false;
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
   public Vision(){
     Robot.logMessage(CommandName, "constructor");
     if (Robot.isReal()){
-      table.getEntry("ledMode").setNumber(1);
+      ledDisable();
       tx = table.getEntry("tx");
       ty = table.getEntry("ty");
       ta = table.getEntry("ta");
       //visionServo = new Servo(Constants.VisionServoPort);
       cam1.getInstance().startAutomaticCapture(0);
-      cam2.getInstance().startAutomaticCapture(1);
+      //cam2.getInstance().startAutomaticCapture(1);
     }else{
       txSim = 0;
       tySim = 0;
@@ -75,22 +75,14 @@ public class Vision extends Subsystem {
   }
 
   public void updateVision(){
-    table.getEntry("ledMode").setNumber(3);
     if(Robot.isReal()){//read values periodically
+      ledEnable();
       x = tx.getDouble(0.0);
       y = ty.getDouble(0.0);
       area = ta.getDouble(0.0);
       SmartDashboard.putNumber("tx", x);
       SmartDashboard.putNumber("ty", y);
       SmartDashboard.putNumber("area", area);
-
-      if(Robot.operatorInterface.driveJoystick.getXButtonReleased()){
-        servoToggle = !servoToggle;
-      }
-      if(!servoToggle) 
-        servoTilt(180);
-      else 
-        servoTilt(140);
     }
     else
     {
@@ -178,8 +170,16 @@ public class Vision extends Subsystem {
     }*/
   }
 
-  public void servoTilt(double angle) {
+  /*public void servoTilt(double angle) {
     visionServo.setAngle(angle);
+  }*/
+
+  public static void ledDisable(){
+    table.getEntry("ledMode").setNumber(1);
+  }
+
+  public static void ledEnable(){
+    table.getEntry("ledMode").setNumber(3);
   }
 
   @Override

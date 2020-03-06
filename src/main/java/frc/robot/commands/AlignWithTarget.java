@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
@@ -65,25 +66,33 @@ public class AlignWithTarget extends Command {
     Robot.driveTrain.setAutoFlag(false);
   }
 
-  public static boolean alignWithTarget(){
-    if(Robot.visionSystem.x > Constants.VisionErrorAllowed){ 
-      Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier);
-    }else if(Robot.visionSystem.x < -Constants.VisionErrorAllowed){
-      Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier);
-    }else {
-      Robot.driveTrain.setSpeedPercentAuto(0, 0);
-      return true;
+  public static void alignWithTarget(){
+    boolean isDone = false;
+    Robot.visionSystem.updateVision();
+    try{
+      Thread.sleep(500);
+    } catch(InterruptedException ex){
+      
     }
-    Robot.driveTrain.updateDriveTrain();
-    return false;
+    while(!isDone){
+      SmartDashboard.putString("Auto is...", "Homing");
+      Robot.visionSystem.updateVision();
+      if(Robot.visionSystem.x > Constants.VisionErrorAllowed){ 
+        Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier);
+      }else if(Robot.visionSystem.x < -Constants.VisionErrorAllowed){
+        Robot.driveTrain.setSpeedPercentAuto((Math.abs(Robot.visionSystem.x) / -27) * Constants.HomingModifier, (Math.abs(Robot.visionSystem.x) / 27) * Constants.HomingModifier);
+      }else {
+        Robot.driveTrain.setSpeedPercentAuto(0, 0);
+        isDone = true;
+      }
+      Robot.driveTrain.updateDriveTrain();
+    }
+    SmartDashboard.putString("Auto is...", "Doing nothing");
   }
 
   public static void alignWithTargetTeleOp(){
     Robot.driveTrain.setAutoFlag(true);
-    boolean isDone = false;
-    while(!isDone){
-      isDone = alignWithTarget();
-    }
+    alignWithTarget();
     Robot.driveTrain.setAutoFlag(false);
   }
 

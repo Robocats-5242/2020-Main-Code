@@ -54,18 +54,19 @@ public class Robot extends TimedRobot {
   int loopCount = 0;
 
   private void updateSmartDashboard(){
-    /*//Historically we have found that if items are not added 
+    //Historically we have found that if items are not added 
     SmartDashboard.putNumber("Left power", driveTrain.getLeftSpeedPercent());
     SmartDashboard.putNumber("Right power", driveTrain.getRightSpeedPercent());
     //SmartDashboard.putNumber("LiftPosition", liftSystem.getLiftPositionInches());
-    SmartDashboard.putNumber("Left dist.", driveTrain.getLeftEncoderInches());
-    SmartDashboard.putNumber("Right dist.", driveTrain.getRightEncoderInches());
-    SmartDashboard.putNumber("Left ticks", driveTrain.getLeftEncoderTicks());
-    SmartDashboard.putNumber("Right ticks", driveTrain.getRightEncoderTicks());
-    //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());*/
+    //SmartDashboard.putNumber("Left dist.", driveTrain.getLeftEncoderInches());
+    //SmartDashboard.putNumber("Right dist.", driveTrain.getRightEncoderInches());
+    //SmartDashboard.putNumber("Left ticks", driveTrain.getLeftEncoderTicks());
+    //SmartDashboard.putNumber("Right ticks", driveTrain.getRightEncoderTicks());
+    //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
     SmartDashboard.putString("Hopper is...", "Off");
     SmartDashboard.putNumber("Gyro Yaw...", 0);
     SmartDashboard.putString("Auto is...", "Doing nothing");
+    SmartDashboard.putNumber("Turn Speed", 0);
 
 //    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
 //    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());
@@ -148,11 +149,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    visionSystem.ledDisable();
   }
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();//ToDo : Do we really want the scheduler to run when disabled?
+    visionSystem.ledDisable();
   }
 
   /**
@@ -170,9 +173,10 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     driveTrain.setAutoFlag(true);
     imu.resetPigeonYaw();
-    AutoCenterish.start();
+    visionSystem.updateVision();
+    AlignWithTarget.alignWithTarget();
+    //AutoCenterish.start();
     //AutoGen.start();
-    //DriveToPosition.driveToPosition(-20, Constants.AutoInSpeed, 0);
   }
 
   /**
@@ -182,10 +186,13 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     driveTrain.setAutoFlag(true);
     Scheduler.getInstance().run();
+    
   }
  
     @Override
   public void teleopInit() {  
+    driveTrain.setSpeedPercentAuto(0, 0);
+    driveTrain.updateDriveTrain();
     driveTrain.setAutoFlag(false);
   } 
 
@@ -226,7 +233,7 @@ public class Robot extends TimedRobot {
     driveTrain.updateDriveTrain();
     visionSystem.updateVision();
     visionSystem.rumbler();
-    AlignWithTarget.alignWithTargetTeleOp();
+    //AlignWithTarget.updateAutoFocus();
     hopper.updateHopper();
     shooter.shoot();
     pneumaticSystem.updatePneumatic();

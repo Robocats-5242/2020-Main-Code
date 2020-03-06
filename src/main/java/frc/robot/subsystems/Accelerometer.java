@@ -74,6 +74,9 @@ public class Accelerometer extends Subsystem {
     return Math.IEEEremainder(getAngleZ(), 360);
   }
 
+  public void setPigeonYaw(double yaw){
+    imu.setYaw(yaw);
+  }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
