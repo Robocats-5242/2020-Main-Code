@@ -48,6 +48,8 @@ public class Robot extends TimedRobot {
   public static Shooter shooter;
   public static Hopper hopper;
 
+  public double angleSelector;
+
   Faults _faults_L = new Faults();
   Faults _faults_R = new Faults();
 
@@ -64,9 +66,9 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Right ticks", driveTrain.getRightEncoderTicks());
     //SmartDashboard.putNumber("Intake power", intakeSystem.getIntakeSpeed());
     SmartDashboard.putString("Hopper is...", "Off");
-    SmartDashboard.putNumber("Gyro Yaw...", 0);
+    SmartDashboard.putNumber("Gyro Yaw...", imu.getAngleZ());
     SmartDashboard.putString("Auto is...", "Doing nothing");
-    SmartDashboard.putNumber("Turn Speed", 0);
+    angleSelector = SmartDashboard.getNumber("Angle Selector", 0.0);
 
 //    SmartDashboard.putNumber("Gyro-X", imu.getAngleX());
 //    SmartDashboard.putNumber("Gyro-Y", imu.getAngleY());
@@ -99,9 +101,11 @@ public class Robot extends TimedRobot {
     climber = new Climber();
     hopper = new Hopper();
 
+    imu.setPigeonYaw(0);
     //Make a note of the current angle of the accelerometer
     //imu.captureOffset();
 
+    SmartDashboard.putNumber("Angle Selector", 0.0);
     updateSmartDashboard();
     
 //    ADIS16470_IMU imu = new ADIS16470_IMU();
@@ -150,6 +154,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     visionSystem.ledDisable();
+    Robot.driveTrain.coastMotors();
   }
 
   @Override
@@ -171,11 +176,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    Robot.driveTrain.brakeMotors();
     driveTrain.setAutoFlag(true);
     imu.resetPigeonYaw();
-    visionSystem.updateVision();
-    AlignWithTarget.alignWithTarget();
-    //AutoCenterish.start();
+    //GyroRotate.gyroRotate(180);
+    AutoCenterish.start();
     //AutoGen.start();
   }
 
@@ -190,7 +195,8 @@ public class Robot extends TimedRobot {
   }
  
     @Override
-  public void teleopInit() {  
+  public void teleopInit() {
+    Robot.driveTrain.brakeMotors();  
     driveTrain.setSpeedPercentAuto(0, 0);
     driveTrain.updateDriveTrain();
     driveTrain.setAutoFlag(false);
@@ -213,6 +219,10 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     //intakeSystem.updateIntake();
     //shooter.shoot(false);
+    driveTrain.setAutoFlag(true);
+    /*if(operatorInterface.getControllerButtonState(Constants.XBoxButtonA)) GyroRotate.gyroRotate(imu.getAngleZ() + angleSelector);
+    SmartDashboard.putNumber("Gyro Yaw...", imu.getAngleZ());*/
+    if(operatorInterface.getControllerButtonState(Constants.XBoxButtonA)) DriveToPosition.driveToPosition(24, Constants.AutoInSpeed, 0);
   }
 
   public static void logMessage(String module, String message){

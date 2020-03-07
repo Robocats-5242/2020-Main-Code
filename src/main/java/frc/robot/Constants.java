@@ -59,8 +59,9 @@ public class Constants {
 	public static final int MaxDecel = 1500;
 
 	//Auto constants
-	public static final double AutoInSpeed                = 0.4;//Speed at which the semi-auto moves towards the target
+	public static final double AutoInSpeed                = 0.8;//Speed at which the semi-auto moves towards the target
 	public static final double AutoOutSpeed               = 0.6;//Speed at which the semi-auto moves away from the target
+	public static final double AutoSlowDown				  = 0.25;
 	public static final double AutoStopFromDistanceCargo  = 6.0;//Distance from the target to stop for cargo (account for the hook)
 	public static final double AutoStopFromDistanceHatch  = 4.0;//Distance from the target to stop for hatches (needs to be inside target)
 	public static final double AutoStopMaxDistance        = 30.0;//Max distance to try to travel when moving towards target
@@ -69,7 +70,7 @@ public class Constants {
 	public static final double AutoHabCreepSpeed          = 0.3;//Speed at which the drive train runs when climbing the hab
 	public static final double AutoRotatekP				  = 0.5;
 	public static final double AutoRotateConstant		  = 0.1;
-	public static final double AutoRotateError			  = 2;
+	public static final double AutoRotateError			  = 0.5;
 
 	//Cargo constants
 	public static final double CargoDepositLowHeight       = 25.0;
@@ -158,7 +159,7 @@ public class Constants {
 	public static final double LimelightMountHeight = 0;
 	public static final double PowerPortTargetHeight = 89.75; //In inches, center of target (2020: 6'9.25" from ground - bottom, 1'5" tall target)
 	public static final double LoadingBayTargetHeight = 16.5; //In inches, center of target (2020: 11" from ground - bottom, 11" tall target)
-	public static final double HomingModifier = 0.00005; //For limiting the speed of homing in AlignWithTarget
+	public static final double HomingModifier = 0.25; //For limiting the speed of homing in AlignWithTarget
 	public static final double VisionErrorAllowed = 0.5;
 	public static final int VisionServoPort = 0;
 	public static final int VisionServoDown = 0;

@@ -118,16 +118,19 @@ public class DriveToPosition extends Command {
         rightDistanceTraveled = Robot.driveTrain.getRightEncoderInches(); 
         distanceTraveled = (leftDistanceTraveled + rightDistanceTraveled) / 2;//Average the left and right encoders
         if (Math.abs(distanceTraveled) >= Math.abs(localDistanceInches)){//Check if gone the entire distance (note, direction is important)
+          Robot.driveTrain.setSpeedPercentAuto(0, 0);
           driveStopped = true;
         }
-        else{//Otherwise make sure driving straight
+        else if(localDistanceInches - distanceTraveled > 12){//Otherwise make sure driving straight
           //leftRightDistanceDelta = leftDistanceTraveled - rightDistanceTraveled;
           //leftRightSpeedCorrection = leftRightDistanceDelta * Constants.DriveStraightPGain;
           Robot.driveTrain.setSpeedPercentAuto(direction * (localSpeed), direction * (localSpeed));
         }
+        else {
+          Robot.driveTrain.setSpeedPercentAuto(direction * (localSpeed) * Constants.AutoSlowDown, direction * (localSpeed) * Constants.AutoSlowDown);
+        }
         Robot.driveTrain.updateDriveTrain();
       }
-      Robot.driveTrain.setSpeedPercentAuto(0, 0);
-      Robot.driveTrain.updateDriveTrain();
+      Robot.driveTrain.fullStop();
     }
 } 

@@ -253,7 +253,7 @@ public class DriveTrain extends Subsystem {
     if (autoFlag == true){
       leftCurrentPercent = leftCurrentPercentAuto;
       rightCurrentPercent = rightCurrentPercentAuto;
-      setSpeedPID(leftCurrentPercent * Constants.MaxRPM, rightCurrentPercent * Constants.MaxRPM, ControlType.kSmartVelocity);
+      setSpeedPID(leftCurrentPercent * Constants.MaxRPM, rightCurrentPercent * Constants.MaxRPM, ControlType.kVelocity);
       SmartDashboard.putString("Is autoFlagged?", "YES");
     }
     else{
@@ -276,6 +276,26 @@ public class DriveTrain extends Subsystem {
   public double metersPerSecToRPM(double leftMPS, double rightMPS){
     return 0;
   }
+
+  public void fullStop(){
+    leftFront.stopMotor();
+    rightFront.stopMotor();
+  }
+
+  public void coastMotors(){
+    leftFront.setIdleMode(IdleMode.kCoast);
+    rightFront.setIdleMode(IdleMode.kCoast);
+    leftFollower.setIdleMode(IdleMode.kCoast);
+    rightFollower.setIdleMode(IdleMode.kCoast);
+  }
+
+  public void brakeMotors(){
+    leftFront.setIdleMode(IdleMode.kBrake);
+    rightFront.setIdleMode(IdleMode.kBrake);
+    leftFollower.setIdleMode(IdleMode.kBrake);
+    rightFollower.setIdleMode(IdleMode.kBrake);
+  }
+
 /*
   public void driveDistanceStraight(double distance) {
     //Drive straight for the specified distance at the default speed, no ultrasonic override

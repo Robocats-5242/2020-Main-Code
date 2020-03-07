@@ -70,7 +70,7 @@ public class AlignWithTarget extends Command {
     boolean isDone = false;
     Robot.visionSystem.updateVision();
     try{
-      Thread.sleep(500);
+      Thread.sleep(100);
     } catch(InterruptedException ex){
       
     }
@@ -87,6 +87,7 @@ public class AlignWithTarget extends Command {
       }
       Robot.driveTrain.updateDriveTrain();
     }
+    Robot.driveTrain.fullStop();
     SmartDashboard.putString("Auto is...", "Doing nothing");
   }
 

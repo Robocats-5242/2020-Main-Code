@@ -57,34 +57,29 @@ public class GyroRotate extends Command{
     }
 
     public static void gyroRotate(double angleYaw){
-        doneTurn = false;
-        double speed = 0;
-        angle = angleYaw;
-        currAngle = Robot.imu.getAngleZ();
-        Robot.driveTrain.setAutoFlag(true);
-        if(angle == 0) angle = 0.001;
-        if(angle > currAngle) turnRight = false;
-        else turnRight = true;
-        while(!doneTurn){
+        boolean isDone = false;
+        double angle = angleYaw;
+        double currAngle = Robot.imu.getAngleZ();
+        double angleDiff = angle - currAngle;
+        double currAngleDiff;
+        double speed;
+        double localMod = Constants.AutoRotatekP;
+        while(!isDone){
             currAngle = Robot.imu.getAngleZ();
-            if(turnRight) angleDiff = currAngle - angle;
-            else angleDiff = angle - currAngle;
-            speed = Math.abs(Math.min((angleDiff / angle), 1) * Constants.AutoRotatekP);
-            SmartDashboard.putNumber("Turn Speed", speed);
-            //Code similar to AlignWithTarget. Don't forget to add a P factor to control the speed of turn //CCW is positive 
-            if(turnRight) Robot.driveTrain.setSpeedPercentAuto(speed + Constants.AutoRotateConstant, -speed - Constants.AutoRotateConstant);
-            else Robot.driveTrain.setSpeedPercentAuto(-speed - Constants.AutoRotateConstant, speed + Constants.AutoRotateConstant);
-            if(Math.abs(angleDiff) < Constants.AutoRotateError){
-                doneTurn = true;
+            currAngleDiff = angle - currAngle;
+            if(Math.abs(currAngleDiff) >= 90)speed = Math.abs(currAngleDiff/angleDiff) * localMod + Constants.AutoRotateConstant;
+            else if(Math.abs(currAngleDiff) >= 45)speed = Math.abs(currAngleDiff/angleDiff) * localMod * 0.5 + Constants.AutoRotateConstant;
+            else speed = Math.abs(currAngleDiff/angleDiff) * localMod * 0.25 + Constants.AutoRotateConstant;
+            if(currAngleDiff < -Constants.AutoRotateError){
+                Robot.driveTrain.setSpeedPercentAuto(speed, -speed);
+            }else if(currAngleDiff > Constants.AutoRotateError){
+                Robot.driveTrain.setSpeedPercentAuto(-speed, speed);
+            }else{
+                isDone = true;
+                Robot.driveTrain.setSpeedPercentAuto(0, 0);
             }
             Robot.driveTrain.updateDriveTrain();
-            }
-            Robot.driveTrain.setSpeedPercentAuto(0, 0);
-            Robot.driveTrain.updateDriveTrain();
-            try{
-                Thread.sleep(500);
-            } catch(InterruptedException ex){
-
-            }
         }
+        Robot.driveTrain.fullStop();
+    }
 }
