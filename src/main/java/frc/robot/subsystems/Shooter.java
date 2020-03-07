@@ -12,12 +12,17 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 /**
  * Add your docs here.
  */
 public class Shooter extends Subsystem {
 
     private CANSparkMax shooter1;
+    private TalonFX shooterFalcon1;
+    private TalonFX shooterFalcon2; 
     private CANPIDController pidController;
     private CANEncoder encoder;
     double setPoint = 0;
@@ -25,7 +30,7 @@ public class Shooter extends Subsystem {
 
 
     public Shooter(){
-        shooter1 = new CANSparkMax(Constants.CANShooter, MotorType.kBrushless);
+        /*shooter1 = new CANSparkMax(Constants.CANShooter, MotorType.kBrushless);
         shooter1.restoreFactoryDefaults();
         pidController = shooter1.getPIDController();
         encoder = shooter1.getEncoder();
@@ -41,7 +46,7 @@ public class Shooter extends Subsystem {
         pidController.setSmartMotionMaxVelocity(Constants.maxShooterRPM, 0);
         pidController.setSmartMotionMaxAccel(Constants.shooterAccel, 0);
 
-        /*SmartDashboard.putNumber("Shooter P Gain", kP);
+        martDashboard.putNumber("Shooter P Gain", kP);
         SmartDashboard.putNumber("Shooter I Gain", kI);
         SmartDashboard.putNumber("Shooter D Gain", kD);
         SmartDashboard.putNumber("Shooter I Zone", kIz);
@@ -49,6 +54,19 @@ public class Shooter extends Subsystem {
         SmartDashboard.putNumber("Shooter Max Output", kMaxOutput);
         SmartDashboard.putNumber("Shooter Min Output", kMinOutput);
         SmartDashboard.putNumber("Shooter Acceleration", accel);*/
+
+        shooterFalcon1 = new TalonFX(20);
+        shooterFalcon2 = new TalonFX(21);
+
+        shooterFalcon1.configFactoryDefault();
+        shooterFalcon2.configFactoryDefault();
+
+        shooterFalcon1.configNeutralDeadband(0.001);
+        shooterFalcon2.configNeutralDeadband(0.001);
+
+        shooterFalcon1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+        shooterFalcon2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+
     }
 
     public void shoot(){
@@ -72,15 +90,15 @@ public class Shooter extends Subsystem {
         }
         pidController.setSmartMotionMaxAccel(accel, 0);*/
             if(Robot.operatorInterface.getControllerButtonStateOp(Constants.XBoxButtonY)){
-                setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
+                //setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
             }else if(Robot.operatorInterface.getControllerButtonStateOp(Constants.XBoxButtonX)){
-                setPoint = 0;
+                //setPoint = 0;
             }
 
-        pidController.setReference(setPoint, ControlType.kSmartVelocity);
+        /*pidController.setReference(setPoint, ControlType.kSmartVelocity);
         
         SmartDashboard.putNumber("SetPoint", setPoint);
-        SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());
+        SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());*/
     }
     public void initDefaultCommand(){
 
