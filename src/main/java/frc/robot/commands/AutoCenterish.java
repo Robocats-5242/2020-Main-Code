@@ -26,29 +26,22 @@ public class AutoCenterish{
     }
 
     public static void start(){
-        SmartDashboard.putString("Auto is...", "Shooting");
         AlignWithTarget.alignWithTarget();
         Robot.shooter.autoShoot(2000);
-        SmartDashboard.putString("Auto is...", "Turning 1");
-        GyroRotate.gyroRotate(0);
+        /*GyroRotate.gyroRotate(0);
         SmartDashboard.putString("Auto is...", "Moving backwards");
         DriveToPosition.driveToPosition(-66.5, Constants.AutoInSpeed, 0);
-        SmartDashboard.putString("Auto is...", "Turning -90");
         GyroRotate.gyroRotate(-90);
-        SmartDashboard.putString("Auto is...", "Moving forwards 1");
         DriveToPosition.driveToPosition(60, Constants.AutoInSpeed, 0);
-        SmartDashboard.putString("Auto is...", "Turning -180");
-        GyroRotate.gyroRotate(-180);
-        SmartDashboard.putString("Auto is...", "Moving forwards 2");
+        GyroRotate.gyroRotate(-180);*/
+        GyroRotate.gyroRotate(38);
+        DriveToPosition.driveToPosition(110, Constants.AutoInSpeed, 0);
+        GyroRotate.gyroRotate(180);
         DriveToPosition.driveToPosition(130, Constants.AutoInSpeed, 0);
-        SmartDashboard.putString("Auto is...", "Turning 0");
         GyroRotate.gyroRotate(0);
-        SmartDashboard.putString("Auto is...", "Moving forwards 3");
         DriveToPosition.driveToPosition(196.5, Constants.AutoInSpeed, 0);
         GyroRotate.gyroRotate(10);
-        SmartDashboard.putString("Auto is...", "Shooting again");
         AlignWithTarget.alignWithTarget();
         Robot.shooter.autoShoot(2000);
-        SmartDashboard.putString("Auto is...", "Done!");
     }
 }

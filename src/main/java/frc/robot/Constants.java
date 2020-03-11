@@ -68,7 +68,7 @@ public class Constants {
 	public static final double AutoDefaultLiftHeight      = 30.0;//Height to move lift to after picking up/depositing something
 	public static final double AutoBackoffDistance        = 12.0;//Distance to back up after picking up/depositing something
 	public static final double AutoHabCreepSpeed          = 0.3;//Speed at which the drive train runs when climbing the hab
-	public static final double AutoRotatekP				  = 0.5;
+	public static final double AutoRotatekP				  = 0.75;
 	public static final double AutoRotateConstant		  = 0.1;
 	public static final double AutoRotateError			  = 0.5;
 

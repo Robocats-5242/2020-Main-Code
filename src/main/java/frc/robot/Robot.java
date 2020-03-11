@@ -96,10 +96,10 @@ public class Robot extends TimedRobot {
     //OI must come after subsystems since it references commands which in turn reference sub-systems
     visionSystem = new Vision();
     imu = new Accelerometer();
-    operatorInterface = new OI();
     shooter = new Shooter();
     climber = new Climber();
     hopper = new Hopper();
+    operatorInterface = new OI();
 
     imu.setPigeonYaw(0);
     //Make a note of the current angle of the accelerometer
@@ -243,7 +243,7 @@ public class Robot extends TimedRobot {
     driveTrain.updateDriveTrain();
     visionSystem.updateVision();
     visionSystem.rumbler();
-    //AlignWithTarget.updateAutoFocus();
+    AlignWithTarget.updateAutoFocus();
     hopper.updateHopper();
     shooter.shoot();
     pneumaticSystem.updatePneumatic();

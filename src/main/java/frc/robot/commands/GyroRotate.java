@@ -62,14 +62,13 @@ public class GyroRotate extends Command{
         double currAngle = Robot.imu.getAngleZ();
         double angleDiff = angle - currAngle;
         double currAngleDiff;
-        double speed;
+        double speed = 0;
         double localMod = Constants.AutoRotatekP;
         while(!isDone){
             currAngle = Robot.imu.getAngleZ();
             currAngleDiff = angle - currAngle;
             if(Math.abs(currAngleDiff) >= 90)speed = Math.abs(currAngleDiff/angleDiff) * localMod + Constants.AutoRotateConstant;
-            else if(Math.abs(currAngleDiff) >= 45)speed = Math.abs(currAngleDiff/angleDiff) * localMod * 0.5 + Constants.AutoRotateConstant;
-            else speed = Math.abs(currAngleDiff/angleDiff) * localMod * 0.25 + Constants.AutoRotateConstant;
+            else if(Math.abs(currAngleDiff) >= 30)speed = Math.abs(currAngleDiff/angleDiff) * localMod * Constants.AutoSlowDown + Constants.AutoRotateConstant;
             if(currAngleDiff < -Constants.AutoRotateError){
                 Robot.driveTrain.setSpeedPercentAuto(speed, -speed);
             }else if(currAngleDiff > Constants.AutoRotateError){
