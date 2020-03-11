@@ -12,6 +12,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -64,8 +65,30 @@ public class Shooter extends Subsystem {
         shooterFalcon1.configNeutralDeadband(0.001);
         shooterFalcon2.configNeutralDeadband(0.001);
 
-        shooterFalcon1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
-        shooterFalcon2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+        shooterFalcon1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, Constants.kTimeoutMs);
+        shooterFalcon2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, Constants.kTimeoutMs);
+
+        shooterFalcon1.configNominalOutputForward(0, Constants.kTimeoutMs);
+        shooterFalcon1.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        shooterFalcon2.configNominalOutputForward(0, Constants.kTimeoutMs);
+        shooterFalcon2.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        shooterFalcon1.configPeakOutputForward(1, Constants.kTimeoutMs);
+        shooterFalcon1.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+        shooterFalcon2.configPeakOutputForward(1, Constants.kTimeoutMs);
+        shooterFalcon2.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+        shooterFalcon1.setInverted(true);
+        shooterFalcon2.setInverted(false);
+
+        shooterFalcon1.config_kF(0, Constants.shooterkF, Constants.kTimeoutMs);
+        shooterFalcon1.config_kP(0, Constants.shooterkP, Constants.kTimeoutMs);
+        shooterFalcon1.config_kI(0, Constants.shooterkI, Constants.kTimeoutMs);
+        shooterFalcon1.config_kD(0, Constants.shooterkD, Constants.kTimeoutMs);
+        shooterFalcon2.config_kF(0, Constants.shooterkF, Constants.kTimeoutMs);
+        shooterFalcon2.config_kP(0, Constants.shooterkP, Constants.kTimeoutMs);
+        shooterFalcon2.config_kI(0, Constants.shooterkI, Constants.kTimeoutMs);
+        shooterFalcon2.config_kD(0, Constants.shooterkD, Constants.kTimeoutMs);
+
 
     }
 
@@ -91,10 +114,14 @@ public class Shooter extends Subsystem {
         pidController.setSmartMotionMaxAccel(accel, 0);*/
             if(Robot.operatorInterface.getControllerButtonStateOp(Constants.XBoxButtonY)){
                 //setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
+                setPoint = Constants.maxShooterRPM * Constants.maxShooterSpeed * 2048 / 600;
             }else if(Robot.operatorInterface.getControllerButtonStateOp(Constants.XBoxButtonX)){
                 //setPoint = 0;
+                setPoint = 0;
             }
 
+        shooterFalcon1.set(TalonFXControlMode.Velocity, setPoint);
+        shooterFalcon2.set(TalonFXControlMode.Velocity, setPoint);
         /*pidController.setReference(setPoint, ControlType.kSmartVelocity);
         
         SmartDashboard.putNumber("SetPoint", setPoint);
@@ -106,8 +133,11 @@ public class Shooter extends Subsystem {
 
     public void autoShoot(int msWait){
         int timeoutLoop = msWait * 20;
-        setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
-        pidController.setReference(setPoint, ControlType.kSmartVelocity);
+        //setPoint = Constants.maxShooterSpeed * Constants.maxShooterRPM;
+        //pidController.setReference(setPoint, ControlType.kSmartVelocity);
+        setPoint = Constants.maxShooterRPM * Constants.maxShooterSpeed * 2048 / 600;
+        shooterFalcon1.set(TalonFXControlMode.Velocity, setPoint);
+        shooterFalcon2.set(TalonFXControlMode.Velocity, setPoint);
         try{
             Thread.sleep(1500);
         } catch(InterruptedException ex){
@@ -116,14 +146,18 @@ public class Shooter extends Subsystem {
 
         Robot.hopper.setHopper(Constants.HopperSpeed);
         while(timeoutLoop > 0){
-            pidController.setReference(setPoint, ControlType.kSmartVelocity);
-            SmartDashboard.putNumber("SetPoint", setPoint);
-            SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());
-            SmartDashboard.putNumber("Loop Count Shooter", timeoutLoop);
+            shooterFalcon1.set(TalonFXControlMode.Velocity, setPoint);
+            shooterFalcon2.set(TalonFXControlMode.Velocity, setPoint);
+            //pidController.setReference(setPoint, ControlType.kSmartVelocity);
+            //SmartDashboard.putNumber("SetPoint", setPoint);
+            //SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());
+            //SmartDashboard.putNumber("Loop Count Shooter", timeoutLoop);
             timeoutLoop --;
         }
         setPoint = 0;
-        pidController.setReference(setPoint, ControlType.kSmartVelocity);
+        shooterFalcon1.set(TalonFXControlMode.Velocity, setPoint);
+        shooterFalcon2.set(TalonFXControlMode.Velocity, setPoint);
+        //pidController.setReference(setPoint, ControlType.kSmartVelocity);
         Robot.hopper.setHopper(0);
     }
 }

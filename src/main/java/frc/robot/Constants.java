@@ -131,7 +131,7 @@ public class Constants {
 	//PID parameters
 	public static final int     DrivekPIDkSlotIdx     = 1;
 	public static final int     DrivekkPIDLoopIdx     = 0;
-	public static final int     DrivekTimeoutMs       = 30;
+	public static final int     kTimeoutMs       = 30;
 	public static final boolean DrivekSensorPhase     = true;
 	public static final boolean DrivekMotorInvert     = true;
 	//kp, ki, kd, kf, izone, peak output
@@ -168,14 +168,14 @@ public class Constants {
 	public static final int rumbleCountWait = 5;
 
 	//Shooter parameters
-	public static final double maxShooterSpeed = 0.9;
-	public static final int maxShooterRPM = 5700;
+	public static final double maxShooterSpeed = 0.862;
+	public static final int maxShooterRPM = 6380;
 	public static final int shooterAccel = 10000;
-	public static final double shooterkP = 7e-5;
-	public static final double shooterkI = 2e-7;
-	public static final double shooterkD = 0;
-	public static final double shooterkIz = 0;
-	public static final double shooterkFF = 0;
+	public static final double shooterkP = 0.1;
+	public static final double shooterkI = 0.001;
+	public static final double shooterkD = 5;
+	public static final double shooterkIz = 300;
+	public static final double shooterkF = 1023.0/20660.0;
 	public static final double shooterkMaxOutput = 1;
 	public static final double shooterkMinOutput = -1;
 
